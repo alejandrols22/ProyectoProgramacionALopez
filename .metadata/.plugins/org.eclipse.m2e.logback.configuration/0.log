@@ -1,1 +1,22 @@
 2023-05-11 18:38:11,956 [Worker-6: Loading available Gradle versions] INFO  o.e.b.c.i.u.g.PublishedGradleVersions - Gradle version information cache is out-of-date. Trying to update.
+2023-05-11 18:40:17,559 [Worker-113: Creating project "alopezproyecto1daw.3trimestre"] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: alopezproyecto1daw.3trimestre:alopezproyecto1daw.3trimestre:0.0.1-SNAPSHOT @ C:\Users\Alejandro\Documents\GitHub\AlejandroLopez\ProyectoProgramacion\alopezproyecto1daw.3trimestre\pom.xml.
+2023-05-11 18:40:18,141 [Worker-113: Creating project "alopezproyecto1daw.3trimestre"] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /alopezproyecto1daw.3trimestre/src/main/java
+2023-05-11 18:40:18,142 [Worker-113: Creating project "alopezproyecto1daw.3trimestre"] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /alopezproyecto1daw.3trimestre/src/main/resources
+2023-05-11 18:40:18,142 [Worker-113: Creating project "alopezproyecto1daw.3trimestre"] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /alopezproyecto1daw.3trimestre/src/test/java
+2023-05-11 18:40:18,142 [Worker-113: Creating project "alopezproyecto1daw.3trimestre"] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /alopezproyecto1daw.3trimestre/src/test/resources
+2023-05-11 18:40:19,058 [Worker-113: Building] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2023-05-11 18:40:19,064 [Worker-113: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2023-05-11 18:40:19,066 [Worker-113: Building] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2023-05-11 18:40:19,068 [Worker-113: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2023-05-11 18:41:15,206 [Worker-117: Building] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2023-05-11 18:41:15,211 [Worker-117: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2023-05-11 18:41:15,213 [Worker-117: Building] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2023-05-11 18:41:15,213 [Worker-117: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2023-05-11 18:41:28,257 [Worker-107: Building] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2023-05-11 18:41:28,258 [Worker-107: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2023-05-11 18:41:28,259 [Worker-107: Building] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2023-05-11 18:41:28,259 [Worker-107: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2023-05-11 18:41:29,317 [Worker-113: Building] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2023-05-11 18:41:29,318 [Worker-113: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
+2023-05-11 18:41:29,319 [Worker-113: Building] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+2023-05-11 18:41:29,319 [Worker-113: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 0 resource
