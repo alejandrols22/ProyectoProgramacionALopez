@@ -1,5 +1,17 @@
 package clases;
 
-abstract class Entidad {
-	protected String nombre;
+public abstract class Entidad {
+    protected static String nombre;
+
+    public Entidad(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getNombre() {
+        return this.nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
 }

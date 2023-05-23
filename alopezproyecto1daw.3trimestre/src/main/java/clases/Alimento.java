@@ -1,11 +1,22 @@
 package clases;
 
 public class Alimento extends Entidad {
+    protected float cantidad;
 
-	protected float cantidad;
+    public Alimento(String nombre, float cantidad) {
+        super(nombre);
+        this.cantidad = cantidad;
+    }
 
-    float calcular_calorias() {
-        // Implementación aquí
-        return 0.0f;
+    public float getCantidad() {
+        return this.cantidad;
+    }
+
+    public void setCantidad(float cantidad) {
+        this.cantidad = cantidad;
+    }
+
+    public void calcular_calorias() {
+        // implementación
     }
 }

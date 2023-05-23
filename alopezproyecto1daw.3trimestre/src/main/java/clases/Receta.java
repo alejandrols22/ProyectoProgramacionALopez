@@ -2,34 +2,43 @@ package clases;
 
 import java.util.HashSet;
 
-public class Receta extends Entidad{
+public class Receta extends Entidad {
+    private HashSet<Alimento> ingredientes;
 
-	private HashSet<Alimento> ingredientes;
-
-    void agregar_ingrediente(Alimento alimento) {
-        // Implementación aquí
+    public Receta(String nombre) {
+        super(nombre);
+        this.ingredientes = new HashSet<>();
     }
 
-    void eliminar_ingrediente(Alimento alimento) {
-        // Implementación aquí
+    public HashSet<Alimento> getIngredientes() {
+        return this.ingredientes;
     }
 
-    void calcular_valores_nutricionales() {
-        // Implementación aquí
+    public void agregar_ingrediente(Alimento alimento) {
+        // implementación
     }
 
-    float getCarbohidratos() {
-        // Implementación aquí
+    public void eliminar_ingrediente(Alimento alimento) {
+        // implementación
+    }
+
+    public void calcular_valores_nutricionales() {
+        // implementación
+    }
+
+    public float getCarbohidratos() {
+        // implementación
         return 0.0f;
     }
 
-    float getProteinas() {
-        // Implementación aquí
+    public float getProteinas() {
+        // implementación
         return 0.0f;
     }
 
-    float getGrasas() {
-        // Implementación aquí
+    public float getGrasas() {
+        // implementación
         return 0.0f;
     }
 }
+
