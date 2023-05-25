@@ -4,4 +4,19 @@
   <artifactId>alopezproyecto1daw.3trimestre</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>alopezproyecto1daw.3trimestre</name>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.jfree</groupId>
+      <artifactId>jfreechart</artifactId>
+      <version>1.5.3</version>
+    </dependency>
+    
+    <dependency>
+        <groupId>mysql</groupId>
+        <artifactId>mysql-connector-java</artifactId>
+        <version>8.0.33</version> <!-- Reemplaza con la versión más reciente -->
+    </dependency>
+  </dependencies>
+
 </project>

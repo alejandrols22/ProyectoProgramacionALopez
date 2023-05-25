@@ -31,7 +31,7 @@ public class Usuario extends Entidad {
 
 	// Prinmer Constructor
 	public Usuario(String nombre, String email, int telefono, String contraseña, byte edad, float peso, float altura,
-			char sexo, NivelActividad nivelActividad, ObjetivoUsuario objetivo, short objetivoDiarioCalorias)
+			char sexo, String nivelActividad2, String objetivo2, String objetivoDiarioCalorias2)
 			throws SQLException, EmailInvalidoExcepcion {
 
 		super(nombre);

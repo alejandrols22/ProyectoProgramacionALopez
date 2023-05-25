@@ -5,9 +5,15 @@ import javax.swing.*;
 import clases.Usuario;
 import excepciones.ClienteNoExisteException;
 import excepciones.ContraseñaInvalidaExcepcion;
+import utilidad.DAO;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 
 public class PantallaLogin extends JFrame {
 
@@ -40,32 +46,41 @@ public class PantallaLogin extends JFrame {
         botonIngresar = new JButton("Ingresar");
         botonIngresar.setBounds(100, 70, 100, 25);
         getContentPane().add(botonIngresar);
-        
+
         JButton botonRegistrarse = new JButton("Registrarse");
         botonRegistrarse.setBounds(229, 70, 100, 25);
         getContentPane().add(botonRegistrarse);
 
-        botonIngresar.addActionListener(e -> {
-            // Aquí va el código para verificar el inicio de sesión
-            new PantallaPrincipal().setVisible(true);
-            this.setVisible(false);
-            
-            String email = textEmail.getText();
-            String contraseña = textPassword.getText();
+        botonIngresar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String email = textEmail.getText();
+                String contraseña = new String(textPassword.getPassword());
 
-            try {
-                Usuario cliente = new Usuario(email, contraseña);
-                new PantallaPrincipal().setVisible(true);
-                this.setVisible(false);
-            } catch (ClienteNoExisteException | ContraseñaInvalidaExcepcion | SQLException ex) {
-               
-                System.err.println("Error al iniciar sesión: " + ex.getMessage());
+                HashMap<String, Object> restricciones = new HashMap<>();
+                restricciones.put("email", email);
+                restricciones.put("contraseña", contraseña);
+
+                try {
+                    if (DAO.consultar("usuario", new LinkedHashSet<>(), restricciones).isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "Usuario y/o contraseña incorrectos");
+                    } else {
+                        new PantallaPrincipal().setVisible(true);
+                        dispose();
+                    }
+                } catch (SQLException ex) {
+                    System.err.println("Error al iniciar sesión: " + ex.getMessage());
+                    // You might want to display a more user-friendly message here...
+                }
             }
         });
-        
-        botonRegistrarse.addActionListener(e -> {
-            new PantallaRegistro().setVisible(true);
-            this.setVisible(false);
+
+        botonRegistrarse.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new PantallaRegistro().setVisible(true);
+                dispose();
+            }
         });
     }
 }
