@@ -1,12 +1,18 @@
 package interfaces;
 
 import javax.swing.*;
+
+
+import javax.swing.*;
+
+import java.sql.Statement;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import enums.NivelActividad;
 import enums.ObjetivoUsuario;
@@ -24,6 +30,7 @@ public class PantallaRegistro extends JFrame {
     private JComboBox<ObjetivoUsuario> comboObjetivo;
     private JSpinner spinnerObjetivoDiarioCalorias;
     private JButton botonRegistrarse;
+    private JButton botonYaTengoCuenta;
 
     public PantallaRegistro() {
         getContentPane().setLayout(null);
@@ -87,6 +94,12 @@ public class PantallaRegistro extends JFrame {
         textAltura.setBounds(100, 191, 160, 25);
         getContentPane().add(textAltura);
 
+        JComboBox<Character> comboSexo = new JComboBox<>();
+        comboSexo.addItem('h');
+        comboSexo.addItem('m');
+        comboSexo.setBounds(100, 221, 160, 25);
+        getContentPane().add(comboSexo);
+
         JLabel etiquetaNivelActividad = new JLabel("Nivel de Actividad:");
         etiquetaNivelActividad.setBounds(10, 251, 120, 25);
         getContentPane().add(etiquetaNivelActividad);
@@ -117,6 +130,10 @@ public class PantallaRegistro extends JFrame {
         botonRegistrarse.setBounds(66, 345, 100, 25);
         getContentPane().add(botonRegistrarse);
 
+        botonYaTengoCuenta = new JButton("Ya tengo cuenta");
+        botonYaTengoCuenta.setBounds(180, 345, 130, 25);
+        getContentPane().add(botonYaTengoCuenta);
+
         botonRegistrarse.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -127,36 +144,59 @@ public class PantallaRegistro extends JFrame {
                 byte edad = Byte.parseByte(textEdad.getText());
                 float peso = Float.parseFloat(textPeso.getText());
                 float altura = Float.parseFloat(textAltura.getText());
+                Character sexo = (Character) comboSexo.getSelectedItem();
                 NivelActividad nivelActividad = (NivelActividad) comboNivelActividad.getSelectedItem();
                 ObjetivoUsuario objetivo = (ObjetivoUsuario) comboObjetivo.getSelectedItem();
                 short objetivoDiarioCalorias = Short.parseShort(spinnerObjetivoDiarioCalorias.getValue().toString());
 
-                try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/programaciondb", "root", "admin1234qslia.xjl")) {
-                    String query = "INSERT INTO Usuario (entidadId, edad, peso, altura, sexo, nivel_actividad, objetivo, objetivo_diario_calorias, correo, contraseña, telefono) VALUES (DEFAULT, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                    PreparedStatement statement = connection.prepareStatement(query);
-                    statement.setByte(1, edad);
-                    statement.setFloat(2, peso);
-                    statement.setFloat(3, altura);
-                    statement.setString(4, ""); // Aquí debes asignar el valor correspondiente para el campo 'sexo'
-                    statement.setString(5, nivelActividad.name());
-                    statement.setString(6, objetivo.name());
-                    statement.setShort(7, objetivoDiarioCalorias);
-                    statement.setString(8, email);
-                    statement.setString(9, password);
-                    statement.setString(10, telefono);
+                try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/programaciondb3", "root", "admin1234qslia.xjl")) {
+                    String queryEntidad = "INSERT INTO Entidad (nombre) VALUES (?)";
+                    PreparedStatement statementEntidad = connection.prepareStatement(queryEntidad, Statement.RETURN_GENERATED_KEYS);
+                    statementEntidad.setString(1, nombre);
+                    statementEntidad.executeUpdate();
 
-                    statement.executeUpdate();
-                    statement.close();
+                    ResultSet generatedKeys = statementEntidad.getGeneratedKeys();
+                    int entidadId = 0;
+                    if (generatedKeys.next()) {
+                        entidadId = generatedKeys.getInt(1);
+                    }
+
+                    String queryUsuario = "INSERT INTO Usuario (entidadId, edad, peso, altura, sexo, nivel_actividad, objetivo, objetivo_diario_calorias, correo, contraseña, telefono) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    PreparedStatement statementUsuario = connection.prepareStatement(queryUsuario);
+                    statementUsuario.setInt(1, entidadId);
+                    statementUsuario.setByte(2, edad);
+                    statementUsuario.setFloat(3, peso);
+                    statementUsuario.setFloat(4, altura);
+                    statementUsuario.setString(5, sexo.toString());
+                    statementUsuario.setString(6, nivelActividad.name());
+                    statementUsuario.setString(7, objetivo.name());
+                    statementUsuario.setShort(8, objetivoDiarioCalorias);
+                    statementUsuario.setString(9, email);
+                    statementUsuario.setString(10, password);
+                    statementUsuario.setString(11, telefono);
+
+                    statementUsuario.executeUpdate();
+
+                    statementEntidad.close();
+                    statementUsuario.close();
+
+                    // Redirigir a PantallaPrincipal después del registro exitoso
+                    PantallaPrincipal pantallaPrincipal = new PantallaPrincipal();
+                    pantallaPrincipal.setVisible(true);
+                    dispose(); // Cerrar la ventana actual de registro
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 }
-
-                // Resto del código...
             }
         });
 
-        // Resto del código...
-
-       
+        botonYaTengoCuenta.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                PantallaLogin pantallaLogin = new PantallaLogin();
+                pantallaLogin.setVisible(true);
+                dispose(); // Cerrar la ventana actual de registro
+            }
+        });
     }
 }

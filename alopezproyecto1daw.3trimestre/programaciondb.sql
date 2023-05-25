@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS programacionDB;
-USE programacionDB;
+CREATE DATABASE IF NOT EXISTS programacionDB3;
+USE programacionDB3;
 
 CREATE TABLE IF NOT EXISTS Entidad (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -56,9 +56,9 @@ CREATE TABLE IF NOT EXISTS Usuario (
     edad TINYINT NOT NULL,
     peso FLOAT NOT NULL,
     altura FLOAT NOT NULL,
-    sexo CHAR(1) NOT NULL,
+    sexo CHAR(1) CHECK (sexo IN ('h', 'm')) NOT NULL,
     nivel_actividad ENUM('LIGERO', 'MODERADO', 'INTENSO') NOT NULL,
-    objetivo ENUM('BAJAR PESO', 'SUBIR PESO', 'MANTENER PESO') NOT NULL,
+    objetivo ENUM('BAJAR_PESO', 'SUBIR_PESO', 'MANTENER_PESO') NOT NULL,
     objetivo_diario_calorias SMALLINT NOT NULL,
     correo VARCHAR(255) NOT NULL UNIQUE,
     contraseña VARCHAR(255) NOT NULL,
