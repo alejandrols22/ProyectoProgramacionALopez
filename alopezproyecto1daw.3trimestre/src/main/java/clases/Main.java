@@ -223,18 +223,20 @@ public class Main {
 		miReceta.agregar_ingrediente(arroz);
 		miReceta.agregar_ingrediente(pollo);
 		
-		PantallaCrearReceta pantallaCrearReceta = new PantallaCrearReceta();
-        pantallaCrearReceta.mostrarInterfaz();
+		
         
         PantallaEjercicio pantalla = new PantallaEjercicio();
         pantalla.mostrar();
+        
+        PantallaCrearRutina pantallaCrearRutina = new PantallaCrearRutina();
+        pantallaCrearRutina.mostrarInterfaz();
 		
 */
-		
+		PantallaCrearReceta pantallaCrearReceta = new PantallaCrearReceta();
+        pantallaCrearReceta.mostrarInterfaz();
         
-		 // El número 1000 representa las calorías objetivo
-	        // que deberían ser quemadas con los ejercicios.
-		PantallaCrearRutina pantallaCrearRutina = new PantallaCrearRutina();
-        pantallaCrearRutina.mostrarInterfaz();
+        
+		
+		
     }
 }

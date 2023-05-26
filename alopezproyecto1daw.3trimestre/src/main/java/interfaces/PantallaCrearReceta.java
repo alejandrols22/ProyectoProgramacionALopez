@@ -11,9 +11,11 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 public class PantallaCrearReceta extends JFrame {
     private static final String CONFIG_FILE = "bdconfig.ini";
+    private Map<String, String> alimentosSeleccionadosPorTipo = new HashMap<>();
 
     private Connection getConnection() throws SQLException, IOException {
         BufferedReader reader = new BufferedReader(new FileReader(CONFIG_FILE));
@@ -41,12 +43,9 @@ public class PantallaCrearReceta extends JFrame {
                 float calorias = resultSet.getFloat("calorias");
                 float cantidad = resultSet.getFloat("cantidad");
 
-                // Verificar si ya existe la lista de alimentos para el tipo actual
                 if (alimentosPorTipo.containsKey(tipoAlimento)) {
-                    // Agregar el nombre del alimento a la lista existente
                     alimentosPorTipo.get(tipoAlimento).add(nombreAlimento + " (" + calorias + " calorías, " + cantidad + " gramos)");
                 } else {
-                    // Crear una nueva lista para el tipo de alimento y agregar el nombre del alimento
                     ArrayList<String> alimentos = new ArrayList<>();
                     alimentos.add(nombreAlimento + " (" + calorias + " calorías, " + cantidad + " gramos)");
                     alimentosPorTipo.put(tipoAlimento, alimentos);
@@ -67,24 +66,29 @@ public class PantallaCrearReceta extends JFrame {
         for (String tipo : alimentosPorTipo.keySet()) {
             ArrayList<String> alimentos = alimentosPorTipo.get(tipo);
 
-            DefaultListModel<String> listModel = new DefaultListModel<>();
+            DefaultComboBoxModel<String> comboBoxModel = new DefaultComboBoxModel<>();
             for (String alimento : alimentos) {
-                listModel.addElement(alimento);
+                comboBoxModel.addElement(alimento);
             }
 
-            JList<String> alimentosList = new JList<>(listModel);
-            JScrollPane scrollPane = new JScrollPane(alimentosList);
+            JComboBox<String> alimentosComboBox = new JComboBox<>(comboBoxModel);
 
-            panel.add(scrollPane);
+            alimentosComboBox.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    JComboBox<String> comboBox = (JComboBox<String>) e.getSource();
+                    String alimentoSeleccionado = (String) comboBox.getSelectedItem();
+                    alimentosSeleccionadosPorTipo.put(tipo, alimentoSeleccionado);
+                }
+            });
+
+            panel.add(alimentosComboBox);
         }
 
         getContentPane().add(panel, BorderLayout.CENTER);
 
-        JLabel labelComidas = new JLabel("Cantidad de comidas:");
-        JTextField textFieldComidas = new JTextField(10);
-
-        JLabel labelCalorias = new JLabel("Calorías diarias:");
-        JTextField textFieldCalorias = new JTextField(10);
+        JLabel labelCaloriasReceta = new JLabel("Calorías de la receta:");
+        JTextField textFieldCaloriasReceta = new JTextField(10);
 
         JLabel labelPorcentajeProteinas = new JLabel("Porcentaje Proteínas:");
         JTextField textFieldPorcentajeProteinas = new JTextField(10);
@@ -95,11 +99,9 @@ public class PantallaCrearReceta extends JFrame {
         JLabel labelPorcentajeGrasas = new JLabel("Porcentaje Grasas:");
         JTextField textFieldPorcentajeGrasas = new JTextField(10);
 
-        JPanel opcionesPanel = new JPanel(new GridLayout(6, 2));
-        opcionesPanel.add(labelComidas);
-        opcionesPanel.add(textFieldComidas);
-        opcionesPanel.add(labelCalorias);
-        opcionesPanel.add(textFieldCalorias);
+        JPanel opcionesPanel = new JPanel(new GridLayout(4, 2));
+        opcionesPanel.add(labelCaloriasReceta);
+        opcionesPanel.add(textFieldCaloriasReceta);
         opcionesPanel.add(labelPorcentajeProteinas);
         opcionesPanel.add(textFieldPorcentajeProteinas);
         opcionesPanel.add(labelPorcentajeCarbohidratos);
@@ -109,88 +111,72 @@ public class PantallaCrearReceta extends JFrame {
 
         getContentPane().add(opcionesPanel, BorderLayout.NORTH);
 
-        JButton calcularButton = new JButton("Calcular Comidas");
+        JButton calcularButton = new JButton("Calcular Comida");
         calcularButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int cantidadComidas = Integer.parseInt(textFieldComidas.getText());
-                float caloriasDiarias = Float.parseFloat(textFieldCalorias.getText());
+                float caloriasReceta = Float.parseFloat(textFieldCaloriasReceta.getText());
                 float porcentajeProteinas = Float.parseFloat(textFieldPorcentajeProteinas.getText());
                 float porcentajeCarbohidratos = Float.parseFloat(textFieldPorcentajeCarbohidratos.getText());
                 float porcentajeGrasas = Float.parseFloat(textFieldPorcentajeGrasas.getText());
 
-                calcularPosiblesComidas(cantidadComidas, caloriasDiarias, porcentajeProteinas, porcentajeCarbohidratos, porcentajeGrasas);
+                mostrarResultadoComida(caloriasReceta, porcentajeProteinas, porcentajeCarbohidratos, porcentajeGrasas);
             }
         });
 
         getContentPane().add(calcularButton, BorderLayout.SOUTH);
     }
 
-    private void calcularPosiblesComidas(int cantidadComidas, float caloriasDiarias, float porcentajeProteinas, float porcentajeCarbohidratos, float porcentajeGrasas) {
-        Map<String, ArrayList<String>> alimentosPorTipo = obtenerAlimentosPorTipo();
+    private void mostrarResultadoComida(float caloriasReceta, float porcentajeProteinas, float porcentajeCarbohidratos,
+                                        float porcentajeGrasas) {
+        StringBuilder resultadoBuilder = new StringBuilder();
 
-        for (int i = 1; i <= cantidadComidas; i++) {
-            System.out.println("Comida " + i + ":");
+        resultadoBuilder.append("Comida:\n\n");
 
-            float caloriasComida = caloriasDiarias / cantidadComidas;
-            float caloriasProteinas = caloriasComida * porcentajeProteinas / 100;
-            float caloriasCarbohidratos = caloriasComida * porcentajeCarbohidratos / 100;
-            float caloriasGrasas = caloriasComida * porcentajeGrasas / 100;
+        float caloriasProteinas = caloriasReceta * porcentajeProteinas / 100;
+        float caloriasCarbohidratos = caloriasReceta * porcentajeCarbohidratos / 100;
+        float caloriasGrasas = caloriasReceta * porcentajeGrasas / 100;
 
-            System.out.println("Proteínas: " + caloriasProteinas + " calorías");
-            System.out.println("Carbohidratos: " + caloriasCarbohidratos + " calorías");
-            System.out.println("Grasas: " + caloriasGrasas + " calorías");
+        resultadoBuilder.append("Proteínas: ").append(caloriasProteinas).append(" calorías\n");
+        resultadoBuilder.append("Carbohidratos: ").append(caloriasCarbohidratos).append(" calorías\n");
+        resultadoBuilder.append("Grasas: ").append(caloriasGrasas).append(" calorías\n");
 
-            for (String tipo : alimentosPorTipo.keySet()) {
-                ArrayList<String> alimentos = alimentosPorTipo.get(tipo);
-                int indiceAlimento = (int) (Math.random() * alimentos.size());
-                String alimento = alimentos.get(indiceAlimento);
+        for (String tipo : alimentosSeleccionadosPorTipo.keySet()) {
+            String alimentoSeleccionado = alimentosSeleccionadosPorTipo.get(tipo);
 
-                String[] parts = alimento.split("\\(");
-                String nombreAlimento = parts[0].trim();
-                System.out.println("nombreAlimento: " + nombreAlimento);
+            String[] parts = alimentoSeleccionado.split("\\(");
+            String nombreAlimento = parts[0].trim();
 
-                parts = parts[1].split("calorías,");
-                float caloriasAlimento = Float.parseFloat(parts[0].trim());
-                System.out.println("caloriasAlimento: " + caloriasAlimento);
+            parts = parts[1].split("calorías,");
+            float caloriasAlimento = Float.parseFloat(parts[0].trim());
 
-                parts = parts[1].split("gramos\\)");
-                float gramosAlimento = Float.parseFloat(parts[0].trim());
-                System.out.println("gramosAlimento: " + gramosAlimento);
+            parts = parts[1].split("gramos\\)");
+            float gramosAlimentoPor100g = Float.parseFloat(parts[0].trim());
+            float gramosAlimento = gramosAlimentoPor100g / 100;
 
-                float gramosNecesarios = 0;
+            float gramosNecesarios = 0;
 
-                switch(tipo) {
-                    case "proteina":
-                        System.out.println("Calculando gramos para proteina");
-                        System.out.println("Calorias Proteinas: " + caloriasProteinas);
-                        System.out.println("Ratio Calorias/Gramos alimento: " + (caloriasAlimento / gramosAlimento));
-                        gramosNecesarios = (caloriasProteinas * gramosAlimento) / caloriasAlimento;
-                        break;
-                    case "carbohidrato":
-                        System.out.println("Calculando gramos para carbohidrato");
-                        System.out.println("Calorias Carbohidratos: " + caloriasCarbohidratos);
-                        System.out.println("Ratio Calorias/Gramos alimento: " + (caloriasAlimento / gramosAlimento));
-                        gramosNecesarios = (caloriasCarbohidratos * gramosAlimento) / caloriasAlimento;
-                        break;
-                    case "grasa":
-                        System.out.println("Calculando gramos para grasa");
-                        System.out.println("Calorias Grasas: " + caloriasGrasas);
-                        System.out.println("Ratio Calorias/Gramos alimento: " + (caloriasAlimento / gramosAlimento));
-                        gramosNecesarios = (caloriasGrasas * gramosAlimento) / caloriasAlimento;
-                        break;
-                }
-                System.out.println("aaaa" + caloriasGrasas);
-                System.out.println("aaaa" + gramosAlimento);
-                System.out.println("aaaa" + caloriasAlimento);
-                System.out.println("Tipo: " + tipo + " - Alimento: " + nombreAlimento);
-                System.out.println("gramosNecesarios: " + gramosNecesarios);
+            if (tipo.equals("Proteina")) {
+                gramosNecesarios = (caloriasProteinas * 100) / caloriasAlimento;
+            } else if (tipo.equals("Carbohidrato")) {
+                gramosNecesarios = (caloriasCarbohidratos * 100) / caloriasAlimento;
+            } else if (tipo.equals("Grasa")) {
+                gramosNecesarios = (caloriasGrasas * 100) / caloriasAlimento;
             }
 
-            System.out.println();
+            resultadoBuilder.append(nombreAlimento).append(": ").append(gramosNecesarios).append(" gramos\n");
         }
+
+        resultadoBuilder.append("\n");
+
+        JTextArea resultadoTextArea = new JTextArea(resultadoBuilder.toString());
+        resultadoTextArea.setEditable(false);
+
+        JScrollPane scrollPane = new JScrollPane(resultadoTextArea);
+
+        JOptionPane.showMessageDialog(this, scrollPane, "Resultado de la Comida", JOptionPane.PLAIN_MESSAGE);
     }
-       
+
     public void mostrarInterfaz() {
         SwingUtilities.invokeLater(() -> {
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -202,3 +188,4 @@ public class PantallaCrearReceta extends JFrame {
         });
     }
 }
+
