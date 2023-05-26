@@ -14,6 +14,7 @@ import interfaces.PantallaCrearRutina;
 import interfaces.PantallaEjercicio;
 import interfaces.PantallaLogin;
 import interfaces.PantallaRegistro;
+import interfaces.PantallaVerRecetas;
 public class Main {
 	
 	public static void main(String[] args) {
@@ -230,10 +231,13 @@ public class Main {
         
         PantallaCrearRutina pantallaCrearRutina = new PantallaCrearRutina();
         pantallaCrearRutina.mostrarInterfaz();
+        
+        PantallaCrearReceta pantallaCrearReceta = new PantallaCrearReceta();
+        pantallaCrearReceta.mostrarInterfaz();
 		
 */
-		PantallaCrearReceta pantallaCrearReceta = new PantallaCrearReceta();
-        pantallaCrearReceta.mostrarInterfaz();
+		PantallaVerRecetas pantallaVerRecetas = new PantallaVerRecetas();
+		pantallaVerRecetas.mostrarInterfaz();
         
         
 		

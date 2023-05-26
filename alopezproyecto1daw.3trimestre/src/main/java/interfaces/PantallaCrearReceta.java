@@ -1,5 +1,7 @@
 package interfaces;
 
+import org.json.JSONObject;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -11,7 +13,6 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 public class PantallaCrearReceta extends JFrame {
     private static final String CONFIG_FILE = "bdconfig.ini";
@@ -172,9 +173,41 @@ public class PantallaCrearReceta extends JFrame {
         JTextArea resultadoTextArea = new JTextArea(resultadoBuilder.toString());
         resultadoTextArea.setEditable(false);
 
-        JScrollPane scrollPane = new JScrollPane(resultadoTextArea);
+        JButton guardarRecetaButton = new JButton("Guardar Receta");
+        guardarRecetaButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                insertarReceta(caloriasProteinas, caloriasCarbohidratos, caloriasGrasas);
+            }
+        });
 
-        JOptionPane.showMessageDialog(this, scrollPane, "Resultado de la Comida", JOptionPane.PLAIN_MESSAGE);
+        JPanel resultadoPanel = new JPanel(new BorderLayout());
+        resultadoPanel.add(resultadoTextArea, BorderLayout.CENTER);
+        resultadoPanel.add(guardarRecetaButton, BorderLayout.SOUTH);
+
+        JOptionPane.showMessageDialog(this, resultadoPanel, "Resultado de la Comida", JOptionPane.PLAIN_MESSAGE);
+    }
+
+    private void insertarReceta(float caloriasProteinas, float caloriasCarbohidratos, float caloriasGrasas) {
+        try (Connection connection = getConnection()) {
+            String alimentosJson = new JSONObject(alimentosSeleccionadosPorTipo).toString();
+
+            String query = "INSERT INTO Receta (entidadId, caloriasProteinas, caloriasCarbohidratos, caloriasGrasas, alimentos) VALUES (?, ?, ?, ?, ?)";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, 1);  // Reemplaza el valor 1 por el valor correcto de entidadId
+            statement.setFloat(2, caloriasProteinas);
+            statement.setFloat(3, caloriasCarbohidratos);
+            statement.setFloat(4, caloriasGrasas);
+            statement.setString(5, alimentosJson);
+
+            int rowsInserted = statement.executeUpdate();
+            if (rowsInserted > 0) {
+                JOptionPane.showMessageDialog(this, "Receta insertada correctamente", "Receta Guardada", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (SQLException | IOException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error al insertar la receta", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     public void mostrarInterfaz() {
