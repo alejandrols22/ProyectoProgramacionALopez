@@ -1,13 +1,13 @@
 package clases;
 
+import enums.Categoria;
+
 public class Ejercicio extends Entidad {
     private float calorias_quemadas_por_minuto;
     private short duracion;
     private Categoria categoria;
 
-    public enum Categoria {
-        // Define las categorías aquí...
-    }
+    
 
     public Ejercicio(String nombre, float calorias_quemadas_por_minuto, short duracion, Categoria categoria) {
         super(nombre);

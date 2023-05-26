@@ -149,7 +149,7 @@ public class PantallaRegistro extends JFrame {
                 ObjetivoUsuario objetivo = (ObjetivoUsuario) comboObjetivo.getSelectedItem();
                 short objetivoDiarioCalorias = Short.parseShort(spinnerObjetivoDiarioCalorias.getValue().toString());
 
-                try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/programaciondb3", "root", "admin1234qslia.xjl")) {
+                try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/programaciondb4", "root", "admin1234qslia.xjl")) {
                     String queryEntidad = "INSERT INTO Entidad (nombre) VALUES (?)";
                     PreparedStatement statementEntidad = connection.prepareStatement(queryEntidad, Statement.RETURN_GENERATED_KEYS);
                     statementEntidad.setString(1, nombre);
@@ -161,7 +161,7 @@ public class PantallaRegistro extends JFrame {
                         entidadId = generatedKeys.getInt(1);
                     }
 
-                    String queryUsuario = "INSERT INTO Usuario (entidadId, edad, peso, altura, sexo, nivel_actividad, objetivo, objetivo_diario_calorias, correo, contraseña, telefono) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    String queryUsuario = "INSERT INTO Usuario (entidadId, edad, peso, altura, sexo, nivel_actividad, objetivo, objetivo_diario_calorias, email, contraseña, telefono) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                     PreparedStatement statementUsuario = connection.prepareStatement(queryUsuario);
                     statementUsuario.setInt(1, entidadId);
                     statementUsuario.setByte(2, edad);

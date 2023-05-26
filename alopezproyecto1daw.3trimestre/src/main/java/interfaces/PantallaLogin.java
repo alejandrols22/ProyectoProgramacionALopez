@@ -1,19 +1,18 @@
+// -*- coding: utf-8 -*-
+
 package interfaces;
 
 import javax.swing.*;
-
-import clases.Usuario;
-import excepciones.ClienteNoExisteException;
-import excepciones.ContraseñaInvalidaExcepcion;
-import utilidad.DAO;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
+
+import utilidad.DAO;
 
 public class PantallaLogin extends JFrame {
 
@@ -59,18 +58,25 @@ public class PantallaLogin extends JFrame {
 
                 HashMap<String, Object> restricciones = new HashMap<>();
                 restricciones.put("email", email);
-                restricciones.put("contraseña", contraseña);
+                restricciones.put("contraseña", contraseña); // Modificado: Reemplazar "contraseña" por "contraseña"
 
                 try {
                     if (DAO.consultar("usuario", new LinkedHashSet<>(), restricciones).isEmpty()) {
                         JOptionPane.showMessageDialog(null, "Usuario y/o contraseña incorrectos");
+                        ArrayList<Object> usuarios = DAO.consultar("usuario", new LinkedHashSet<>(), new HashMap<>());
+                        
+                        // Mostrar la lista de usuarios existentes
+                        System.out.println("Usuarios existentes:");
+                        for (Object usuario : usuarios) {
+                            System.out.println(usuario);
+                        }
                     } else {
                         new PantallaPrincipal().setVisible(true);
                         dispose();
                     }
                 } catch (SQLException ex) {
                     System.err.println("Error al iniciar sesión: " + ex.getMessage());
-                    // You might want to display a more user-friendly message here...
+                    // Puedes mostrar un mensaje de error más amigable al usuario aquí...
                 }
             }
         });

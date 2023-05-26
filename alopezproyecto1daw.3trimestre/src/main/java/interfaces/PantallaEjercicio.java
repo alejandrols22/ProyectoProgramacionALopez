@@ -6,99 +6,43 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class PantallaEjercicio {
-
     private JFrame frame;
-    private JPanel panel;
-    private JLabel ejercicioLabel;
-    private JLabel mensajeLabel;
-    private int indiceEjercicio;
 
-    private String[] ejercicios = {
-            "ejercicio1.gif",
-            "ejercicio2.gif",
-            "ejercicio3.gif"
-    };
+    
 
-    private String imagenDescanso = "descanso.jpg";
+        public PantallaEjercicio() {
+            // Crea una nueva ventana (JFrame)
+            frame = new JFrame();
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setSize(500, 500); // Ajusta el tamaño según sea necesario
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                new PantallaEjercicio().crearInterfaz();
+            // Ruta relativa del archivo GIF
+            String rutaGIF = "src/main/java/gifs/yoga.gif";
+
+            // Verifica si el archivo existe
+            java.io.File file = new java.io.File(rutaGIF);
+            if (!file.exists()) {
+                System.out.println("El archivo no existe: " + file.getAbsolutePath());
+                throw new RuntimeException("El archivo no existe: " + file.getAbsolutePath());
+            } else {
+                System.out.println("El archivo existe: " + file.getAbsolutePath());
             }
-        });
-    }
 
-    public void crearInterfaz() {
-        frame = new JFrame("Rutina de Ejercicios");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            // Carga el GIF en un ImageIcon
+            ImageIcon icon = new ImageIcon(file.getAbsolutePath());
 
-        panel = new JPanel();
-        panel.setLayout(new BorderLayout());
+            // Crea un JLabel y configúralo para mostrar el icono
+            JLabel label = new JLabel(icon);
 
-        ejercicioLabel = new JLabel();
-        mensajeLabel = new JLabel();
+            // Agrega el JLabel a la ventana
+            frame.getContentPane().add(label, BorderLayout.CENTER);
+        }
 
-        JButton empezarButton = new JButton("Empezar Rutina");
-        empezarButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                empezarRutina();
-            }
-        });
-
-        JButton descansoButton = new JButton("Descanso");
-        descansoButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                mostrarImagenDescanso();
-            }
-        });
-
-        JButton siguienteButton = new JButton("Siguiente Ejercicio");
-        siguienteButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                mostrarSiguienteEjercicio();
-            }
-        });
-
-        JPanel buttonsPanel = new JPanel();
-        buttonsPanel.add(descansoButton);
-        buttonsPanel.add(siguienteButton);
-
-        panel.add(ejercicioLabel, BorderLayout.CENTER);
-        panel.add(mensajeLabel, BorderLayout.SOUTH);
-        panel.add(empezarButton, BorderLayout.NORTH);
-        panel.add(buttonsPanel, BorderLayout.SOUTH);
-
-        frame.getContentPane().add(panel);
-        frame.setSize(400, 300);
-        frame.setVisible(true);
-    }
-
-    private void empezarRutina() {
-        indiceEjercicio = 0;
-        mostrarEjercicio();
-    }
-
-    private void mostrarEjercicio() {
-        if (indiceEjercicio < ejercicios.length) {
-            String rutaEjercicio = ejercicios[indiceEjercicio];
-            ImageIcon imagenEjercicio = new ImageIcon(getClass().getResource(rutaEjercicio));
-            ejercicioLabel.setIcon(imagenEjercicio);
-            mensajeLabel.setText("");
-        } else {
-            ejercicioLabel.setIcon(null);
-            mensajeLabel.setText("¡Enhorabuena! Has terminado la rutina.");
+        public void mostrar() {
+            // Hace visible la ventana
+            frame.setVisible(true);
         }
     }
 
-    private void mostrarImagenDescanso() {
-        ImageIcon imagenDescanso = new ImageIcon(getClass().getResource(imagenDescanso));
-        ejercicioLabel.setIcon(imagenDescanso);
-        mensajeLabel.setText("Descansando...");
-    }
 
-    private void mostrarSiguienteEjercicio() {
-        indiceEjercicio++;
-        mostrarEjercicio();
-    }
-}
+	

@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS programacionDB3;
-USE programacionDB3;
+CREATE DATABASE IF NOT EXISTS programacionDB4;
+USE programacionDB4;
 
 CREATE TABLE IF NOT EXISTS Entidad (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS Alimento (
     id INT AUTO_INCREMENT PRIMARY KEY,
     entidadId INT,
     cantidad FLOAT NOT NULL,
+    calorias FLOAT NOT NULL,
     tipo ENUM('Carbohidrato', 'Grasa', 'Proteina') NOT NULL,
     FOREIGN KEY (entidadId) REFERENCES Entidad(id)
 );
@@ -33,7 +34,7 @@ CREATE TABLE IF NOT EXISTS Ejercicio (
     entidadId INT,
     calorias_quemadas_por_minuto FLOAT NOT NULL,
     duracion SMALLINT NOT NULL,
-    categoria ENUM('Categoria1', 'Categoria2', 'Categoria3') NOT NULL,
+    categoria ENUM('RESISTENCIA', 'FUERZA', 'FLEXIBILIDAD') NOT NULL,
     FOREIGN KEY (entidadId) REFERENCES Entidad(id)
 );
 
@@ -60,7 +61,7 @@ CREATE TABLE IF NOT EXISTS Usuario (
     nivel_actividad ENUM('LIGERO', 'MODERADO', 'INTENSO') NOT NULL,
     objetivo ENUM('BAJAR_PESO', 'SUBIR_PESO', 'MANTENER_PESO') NOT NULL,
     objetivo_diario_calorias SMALLINT NOT NULL,
-    correo VARCHAR(255) NOT NULL UNIQUE,
+    email VARCHAR(255) NOT NULL UNIQUE,
     contraseña VARCHAR(255) NOT NULL,
     telefono VARCHAR(20),
     FOREIGN KEY (entidadId) REFERENCES Entidad(id)
