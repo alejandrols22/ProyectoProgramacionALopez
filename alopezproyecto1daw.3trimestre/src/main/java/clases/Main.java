@@ -10,7 +10,7 @@ import enums.Categoria;
 import javax.imageio.ImageIO;
 
 import interfaces.PantallaCrearReceta;
-
+import interfaces.PantallaCrearRutina;
 import interfaces.PantallaEjercicio;
 import interfaces.PantallaLogin;
 import interfaces.PantallaRegistro;
@@ -225,11 +225,16 @@ public class Main {
 		
 		PantallaCrearReceta pantallaCrearReceta = new PantallaCrearReceta();
         pantallaCrearReceta.mostrarInterfaz();
+        
+        PantallaEjercicio pantalla = new PantallaEjercicio();
+        pantalla.mostrar();
 		
 */
-		PantallaEjercicio pantalla = new PantallaEjercicio();
-        pantalla.mostrar();
+		
         
-	}
-
+		 // El número 1000 representa las calorías objetivo
+	        // que deberían ser quemadas con los ejercicios.
+		PantallaCrearRutina pantallaCrearRutina = new PantallaCrearRutina();
+        pantallaCrearRutina.mostrarInterfaz();
+    }
 }
