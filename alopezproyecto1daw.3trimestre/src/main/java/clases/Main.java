@@ -229,6 +229,7 @@ public class Main {
 */
 		PantallaEjercicio pantalla = new PantallaEjercicio();
         pantalla.mostrar();
+        
 	}
 
 }

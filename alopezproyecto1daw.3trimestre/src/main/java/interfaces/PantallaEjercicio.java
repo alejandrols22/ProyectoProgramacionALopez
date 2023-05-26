@@ -1,48 +1,112 @@
 package interfaces;
 
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 public class PantallaEjercicio {
     private JFrame frame;
+    private JLabel label;
+    private int gifIndex;
+    private String[] gifPaths;
+    private Clip audioClip;
+    private JButton audioButton;
+    private boolean isPlaying;
 
-    
+    public PantallaEjercicio() {
+        // Crea una nueva ventana (JFrame)
+        frame = new JFrame();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(500, 500); // Ajusta el tamaño según sea necesario
 
-        public PantallaEjercicio() {
-            // Crea una nueva ventana (JFrame)
-            frame = new JFrame();
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(500, 500); // Ajusta el tamaño según sea necesario
+        // Rutas relativas de los archivos GIF
+        gifPaths = new String[] {
+                "src/main/java/gifs/burpe.gif",
+                "src/main/java/gifs/yoga.gif",
+                "src/main/java/gifs/gato.gif"
+        };
+        gifIndex = 0;
 
-            // Ruta relativa del archivo GIF
-            String rutaGIF = "src/main/java/gifs/yoga.gif";
+        // Carga el primer GIF en un ImageIcon y crea un JLabel para mostrarlo
+        ImageIcon icon = new ImageIcon(gifPaths[gifIndex]);
+        label = new JLabel(icon);
 
-            // Verifica si el archivo existe
-            java.io.File file = new java.io.File(rutaGIF);
-            if (!file.exists()) {
-                System.out.println("El archivo no existe: " + file.getAbsolutePath());
-                throw new RuntimeException("El archivo no existe: " + file.getAbsolutePath());
-            } else {
-                System.out.println("El archivo existe: " + file.getAbsolutePath());
+        // Crea un panel para contener los botones
+        JPanel panel = new JPanel();
+        panel.setLayout(new FlowLayout(FlowLayout.CENTER));
+
+        // Crea el botón "Siguiente" y agrega un ActionListener para cambiar el GIF
+        JButton siguienteButton = new JButton("Siguiente");
+        siguienteButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                gifIndex++;
+                if (gifIndex >= gifPaths.length) {
+                    gifIndex = 0;
+                }
+                ImageIcon newIcon = new ImageIcon(gifPaths[gifIndex]);
+                label.setIcon(newIcon);
             }
+        });
+        panel.add(siguienteButton);
 
-            // Carga el GIF en un ImageIcon
-            ImageIcon icon = new ImageIcon(file.getAbsolutePath());
+        // Crea el botón "Reproducir/Detener audio" y agrega un ActionListener
+        audioButton = new JButton("Reproducir audio");
+        audioButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (isPlaying) {
+                    stopAudio();
+                } else {
+                    playAudio();
+                }
+            }
+        });
+        panel.add(audioButton);
 
-            // Crea un JLabel y configúralo para mostrar el icono
-            JLabel label = new JLabel(icon);
+        // Agrega el JLabel y el panel al contenedor principal de la ventana
+        frame.getContentPane().add(label, BorderLayout.CENTER);
+        frame.getContentPane().add(panel, BorderLayout.SOUTH);
+    }
 
-            // Agrega el JLabel a la ventana
-            frame.getContentPane().add(label, BorderLayout.CENTER);
-        }
+    private void playAudio() {
+        try {
+            // Carga el archivo de audio
+            File audioFile = new File("src/main/java/canciones/cancion.wav");
+            audioClip = AudioSystem.getClip();
+            audioClip.open(AudioSystem.getAudioInputStream(audioFile));
 
-        public void mostrar() {
-            // Hace visible la ventana
-            frame.setVisible(true);
+            // Reproduce el audio en un bucle continuo
+            audioClip.loop(Clip.LOOP_CONTINUOUSLY);
+
+            // Actualiza el texto del botón
+            audioButton.setText("Detener audio");
+
+            // Marca el estado de reproducción como activo
+            isPlaying = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(frame, "Error al reproducir el audio: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
+    private void stopAudio() {
+        if (audioClip != null && audioClip.isRunning()) {
+            audioClip.stop();
+            audioClip.close();
+        }
 
-	
+        // Actualiza el texto del botón
+        audioButton.setText("Reproducir audio");
+
+        // Marca el estado de reproducción como inactivo
+        isPlaying = false;
+    }
+
+    public void mostrar() {
+        // Hace visible la ventana
+        frame.setVisible(true);
+    }
+}
