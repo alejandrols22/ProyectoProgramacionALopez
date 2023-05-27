@@ -21,7 +21,7 @@ public class PantallaPrincipal extends JFrame {
         botonCrearRecetas.setBounds(100, 150, 200, 30);
         add(botonCrearRecetas);
         botonCrearRecetas.addActionListener(e -> {
-            new PantallaCrearRecetas().setVisible(true);
+            new PantallaCrearReceta().setVisible(true);
             this.setVisible(false);
         });
 

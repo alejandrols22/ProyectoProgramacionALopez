@@ -4,7 +4,11 @@ import java.awt.image.BufferedImage;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 
 import enums.Categoria;
 import javax.imageio.ImageIO;
@@ -15,6 +19,7 @@ import interfaces.PantallaEjercicio;
 import interfaces.PantallaLogin;
 import interfaces.PantallaRegistro;
 import interfaces.PantallaVerRecetas;
+import utilidad.DAO;
 public class Main {
 	
 	public static void main(String[] args) {
@@ -244,7 +249,27 @@ public class Main {
         
 		
 */
-		
+		ArrayList<Object> usuarios = null;
+		try {
+		    usuarios = DAO.consultar("usuario", new LinkedHashSet<>(), new HashMap<>());
+		} catch (SQLException e) {
+		    e.printStackTrace();
+		}
+
+		// Comprueba si los usuarios no son null antes de intentar imprimirlos
+		if (usuarios != null) {
+		    // Mostrar la lista de usuarios existentes
+		    System.out.println("Usuarios existentes:");
+		    for (Object usuario : usuarios) {
+		        System.out.println(usuario);
+		    }
+		} else {
+		    System.out.println("No se pudo obtener la lista de usuarios.");
+		   
+		}
+		 System.out.println("Usuarios obtenidos: " + usuarios.size());
+		PantallaLogin pantallaLogin = new PantallaLogin();
+        pantallaLogin.setVisible(true);
 		
 		
     }

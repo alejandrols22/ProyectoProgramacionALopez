@@ -134,8 +134,9 @@ public abstract class DAO {
 	    System.out.println(query);
 
 	    ResultSet cursor = smt.executeQuery(query);
-	    ArrayList<Object> fila = new ArrayList<Object>();
+	    ArrayList<Object> filas = new ArrayList<Object>();
 	    while (cursor.next()) {
+	        ArrayList<Object> fila = new ArrayList<Object>(); // Crear un nuevo ArrayList para cada fila
 	        Iterator<String> hsCols = columnasSelect.iterator();
 	        while (hsCols.hasNext()) {
 	            String nombreCol = hsCols.next();
@@ -145,11 +146,11 @@ public abstract class DAO {
 	                fila.add(cursor.getString(nombreCol));
 	            }
 	        }
+	        filas.add(fila); // Agregar la fila al ArrayList de filas
 	    }
 	    desconectar(smt);
-	    return fila;
+	    return filas;
 	}
-
 	public static int actualizar(String tabla, HashMap<String, Object> datosAModificar,
 			HashMap<String, Object> restricciones) throws SQLException {
 		String query = "update " + tabla + " set ";
