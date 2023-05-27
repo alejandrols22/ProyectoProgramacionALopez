@@ -246,31 +246,14 @@ public class Main {
 		PantallaCrearRutina pantallaCrearRutina = new PantallaCrearRutina();
         pantallaCrearRutina.mostrarInterfaz();
 		
-        
-		
-*/
-		ArrayList<Object> usuarios = null;
-		try {
-		    usuarios = DAO.consultar("usuario", new LinkedHashSet<>(), new HashMap<>());
-		} catch (SQLException e) {
-		    e.printStackTrace();
-		}
-
-		// Comprueba si los usuarios no son null antes de intentar imprimirlos
-		if (usuarios != null) {
-		    // Mostrar la lista de usuarios existentes
-		    System.out.println("Usuarios existentes:");
-		    for (Object usuario : usuarios) {
-		        System.out.println(usuario);
-		    }
-		} else {
-		    System.out.println("No se pudo obtener la lista de usuarios.");
-		   
-		}
-		 System.out.println("Usuarios obtenidos: " + usuarios.size());
-		PantallaLogin pantallaLogin = new PantallaLogin();
+        PantallaLogin pantallaLogin = new PantallaLogin();
         pantallaLogin.setVisible(true);
 		
+*/
+		
+		
+		PantallaLogin pantallaLogin = new PantallaLogin();
+        pantallaLogin.setVisible(true);
 		
     }
 }

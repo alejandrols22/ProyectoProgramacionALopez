@@ -3,7 +3,6 @@
 package interfaces;
 
 import javax.swing.*;
-import interfaces.PantallaPrincipal;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
