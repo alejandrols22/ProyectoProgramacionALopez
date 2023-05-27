@@ -6,16 +6,26 @@ public class Ejercicio extends Entidad {
     private float calorias_quemadas_por_minuto;
     private short duracion;
     private Categoria categoria;
+    private int id;
 
     
 
     public Ejercicio(String nombre, float calorias_quemadas_por_minuto, short duracion, Categoria categoria) {
         super(nombre);
+       
         this.calorias_quemadas_por_minuto = calorias_quemadas_por_minuto;
         this.duracion = duracion;
         this.categoria = categoria;
     }
-
+    
+    public Ejercicio(String nombre, float calorias_quemadas_por_minuto, short duracion) {
+        super(nombre);
+       
+        this.calorias_quemadas_por_minuto = calorias_quemadas_por_minuto;
+        this.duracion = duracion;
+        
+    }
+    
     public float getCalorias_quemadas_por_minuto() {
         return this.calorias_quemadas_por_minuto;
     }

@@ -1,6 +1,7 @@
 package interfaces;
 
 import enums.Categoria;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -10,9 +11,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Random;
 
 public class PantallaCrearRutina extends JFrame {
     private static final String CONFIG_FILE = "bdconfig.ini";
@@ -60,13 +60,13 @@ public class PantallaCrearRutina extends JFrame {
         return DriverManager.getConnection(url, user, password);
     }
 
-    private Map<Categoria, List<Ejercicio>> getEjercicios() {
-        Map<Categoria, List<Ejercicio>> ejerciciosPorCategoria = new HashMap<>();
+    private List<Ejercicio> getEjercicios() {
+        List<Ejercicio> ejercicios = new ArrayList<>();
 
         try (Connection connection = getConnection()) {
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT e.nombre, ej.calorias_quemadas_por_minuto, ej.duracion, ej.categoria FROM Ejercicio ej JOIN Entidad e ON ej.entidadId = e.id");
-
+           
+            ResultSet resultSet = statement.executeQuery("SELECT e.nombre, a.calorias_quemadas_por_minuto, a.duracion, a.categoria FROM Ejercicio a JOIN Entidad e ON a.entidadId = e.id");
             while (resultSet.next()) {
                 String nombreEjercicio = resultSet.getString("nombre");
                 float caloriasPorMinuto = resultSet.getFloat("calorias_quemadas_por_minuto");
@@ -74,62 +74,108 @@ public class PantallaCrearRutina extends JFrame {
                 Categoria categoria = Categoria.valueOf(resultSet.getString("categoria").toUpperCase());
 
                 Ejercicio ejercicio = new Ejercicio(nombreEjercicio, caloriasPorMinuto, duracion, categoria);
-
-                if (ejerciciosPorCategoria.containsKey(categoria)) {
-                    ejerciciosPorCategoria.get(categoria).add(ejercicio);
-                } else {
-                    List<Ejercicio> ejercicios = new ArrayList<>();
-                    ejercicios.add(ejercicio);
-                    ejerciciosPorCategoria.put(categoria, ejercicios);
-                }
+                ejercicios.add(ejercicio);
             }
         } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
 
-        return ejerciciosPorCategoria;
+        return ejercicios;
     }
 
     private List<Ejercicio> seleccionarEjerciciosParaObjetivo(float caloriasObjetivo) {
-        Map<Categoria, List<Ejercicio>> ejerciciosPorCategoria = getEjercicios();
+        List<Ejercicio> ejerciciosDisponibles = getEjercicios();
         List<Ejercicio> ejerciciosSeleccionados = new ArrayList<>();
-
-        // Create a copy of the available exercises to avoid modifying the original list
-        Map<Categoria, List<Ejercicio>> availableEjerciciosPorCategoria = new HashMap<>(ejerciciosPorCategoria);
+        Random random = new Random();
 
         while (caloriasObjetivo > 0) {
-            // Select a random category from the available categories
-            List<Categoria> categorias = new ArrayList<>(availableEjerciciosPorCategoria.keySet());
-            Categoria categoria = categorias.get((int) (Math.random() * categorias.size()));
-
-            // Check if there are available exercises in the selected category
-            List<Ejercicio> ejercicios = availableEjerciciosPorCategoria.get(categoria);
-            if (ejercicios.isEmpty()) {
-                // If no exercises are available in the category, remove it from the available categories
-                availableEjerciciosPorCategoria.remove(categoria);
-                continue;
+            if (ejerciciosDisponibles.isEmpty()) {
+                break;
             }
 
-            // Select a random exercise from the category
-            Ejercicio ejercicio = ejercicios.get((int) (Math.random() * ejercicios.size()));
+            int index = random.nextInt(ejerciciosDisponibles.size());
+            Ejercicio ejercicio = ejerciciosDisponibles.get(index);
 
-            // Check if the exercise duration can fit within the remaining calories
             int duracionEjercicio = ejercicio.getDuracion();
             float caloriasEjercicio = ejercicio.getCaloriasPorMinuto() * duracionEjercicio;
+
             if (caloriasEjercicio <= caloriasObjetivo) {
                 ejerciciosSeleccionados.add(ejercicio);
                 caloriasObjetivo -= caloriasEjercicio;
             }
 
-            // Remove the selected exercise from the available exercises
-            ejercicios.remove(ejercicio);
-            if (ejercicios.isEmpty()) {
-                // If all exercises in the category have been selected, remove the category from the available categories
-                availableEjerciciosPorCategoria.remove(categoria);
-            }
+            ejerciciosDisponibles.remove(index);
         }
 
         return ejerciciosSeleccionados;
+    }
+
+    private void insertarRutinaEnBaseDatos(List<Ejercicio> ejercicios) {
+        try (Connection connection = getConnection()) {
+
+            // Insertar la rutina en la tabla Rutina
+            PreparedStatement rutinaStatement = connection.prepareStatement("INSERT INTO Rutina VALUES (DEFAULT)");
+            rutinaStatement.executeUpdate();
+
+            // Obtener el ID de la rutina recién insertada
+            Statement lastIdStatement = connection.createStatement();
+            ResultSet lastIdResult = lastIdStatement.executeQuery("SELECT LAST_INSERT_ID()");
+            int rutinaId = 0;
+            if (lastIdResult.next()) {
+                rutinaId = lastIdResult.getInt(1);
+            }
+
+            // Insertar los ejercicios de la rutina en la tabla Rutina_Ejercicio
+            for (Ejercicio ejercicio : ejercicios) {
+
+                PreparedStatement ejercicioStatement = connection.prepareStatement(
+                        "INSERT INTO Rutina_Ejercicio (rutinaId, duracion) VALUES (?, ?)",
+                        Statement.RETURN_GENERATED_KEYS);
+                ejercicioStatement.setInt(1, rutinaId);
+                ejercicioStatement.setFloat(2, ejercicio.getDuracion());
+                ejercicioStatement.executeUpdate();
+
+                // Obtener el ejercicioId generado automáticamente
+                ResultSet generatedKeys = ejercicioStatement.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    int ejercicioId = generatedKeys.getInt(1);
+                    System.out.println("Ejercicio insertado con ejercicioId: " + ejercicioId);
+                } else {
+                    System.out.println("No se pudo obtener el ejercicioId generado automáticamente");
+                }
+            }
+
+            JOptionPane.showMessageDialog(this, "La rutina se ha guardado correctamente.");
+        } catch (SQLException | IOException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error al guardar la rutina. Por favor, inténtalo de nuevo.");
+        }
+    }
+
+    private void mostrarEjerciciosSeleccionados(float caloriasObjetivo) {
+        List<Ejercicio> ejerciciosSeleccionados = seleccionarEjerciciosParaObjetivo(caloriasObjetivo);
+
+        JTextArea textArea = new JTextArea();
+        textArea.setEditable(false);
+
+        for (Ejercicio ejercicio : ejerciciosSeleccionados) {
+            textArea.append(ejercicio.getNombre() + " - " + ejercicio.getDuracion() + " minutos\n");
+        }
+
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        getContentPane().add(scrollPane, BorderLayout.CENTER);
+
+        JButton guardarButton = new JButton("Guardar rutina");
+        guardarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                insertarRutinaEnBaseDatos(ejerciciosSeleccionados);
+            }
+        });
+        getContentPane().add(guardarButton, BorderLayout.SOUTH);
+
+        revalidate();
+        repaint();
     }
 
     private void initComponents() {
@@ -141,27 +187,39 @@ public class PantallaCrearRutina extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 float caloriasObjetivo = Float.parseFloat(textFieldCaloriasObjetivo.getText());
-
+                
                 List<Ejercicio> ejerciciosSeleccionados = seleccionarEjerciciosParaObjetivo(caloriasObjetivo);
-
+                
                 JTextArea textArea = new JTextArea();
                 textArea.setEditable(false);
-
+                
                 for (Ejercicio ejercicio : ejerciciosSeleccionados) {
                     textArea.append(ejercicio.getNombre() + " - " + ejercicio.getDuracion() + " minutos\n");
                 }
-
-                JScrollPane scrollPane = new JScrollPane(textArea);
-                getContentPane().add(scrollPane, BorderLayout.CENTER);
+                
+                getContentPane().removeAll(); // Eliminar los componentes anteriores
+                mostrarEjerciciosSeleccionados(caloriasObjetivo);
             }
         });
 
         JPanel opcionesPanel = new JPanel(new GridLayout(1, 2));
         opcionesPanel.add(labelCaloriasObjetivo);
         opcionesPanel.add(textFieldCaloriasObjetivo);
+        
+        JPanel buttonsPanel = new JPanel(new FlowLayout());
+        buttonsPanel.add(calcularButton);
+        
 
+        
+        
         getContentPane().add(opcionesPanel, BorderLayout.NORTH);
-        getContentPane().add(calcularButton, BorderLayout.SOUTH);
+        getContentPane().setLayout(new FlowLayout(FlowLayout.CENTER));
+        getContentPane().add(calcularButton);
+        
+        
+        
+        
+        
     }
 
     public void mostrarInterfaz() {

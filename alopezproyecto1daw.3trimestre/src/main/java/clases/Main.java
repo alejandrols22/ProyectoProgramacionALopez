@@ -234,12 +234,15 @@ public class Main {
         
         PantallaCrearReceta pantallaCrearReceta = new PantallaCrearReceta();
         pantallaCrearReceta.mostrarInterfaz();
-		
-*/
-		PantallaVerRecetas pantallaVerRecetas = new PantallaVerRecetas();
+        
+        PantallaVerRecetas pantallaVerRecetas = new PantallaVerRecetas();
 		pantallaVerRecetas.mostrarInterfaz();
         
-        
+		
+*/
+		
+		PantallaCrearRutina pantallaCrearRutina = new PantallaCrearRutina();
+        pantallaCrearRutina.mostrarInterfaz();
 		
 		
     }
