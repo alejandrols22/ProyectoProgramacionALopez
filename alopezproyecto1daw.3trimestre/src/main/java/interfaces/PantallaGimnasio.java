@@ -1,10 +1,17 @@
 package interfaces;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,30 +22,43 @@ public class PantallaGimnasio {
     @GET
     @Path("/cercanos")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response obtenerGimnasiosCercanos() {
+    public javax.ws.rs.core.Response obtenerGimnasiosCercanos() {
         try {
-            // Obtener la ubicación actual del usuario
-            String latitud = "37.7749"; // Latitud de ejemplo
-            String longitud = "-122.4194"; // Longitud de ejemplo
-
-            // Llamar al servicio de Google Places para obtener los gimnasios cercanos
-            List<String> gimnasiosCercanos = obtenerGimnasiosCercanosDesdeGooglePlaces(latitud, longitud);
+            // Llamar al servicio de Nominatim para obtener los gimnasios cercanos
+            List<String> gimnasiosCercanos = obtenerGimnasiosCercanosDesdeNominatim("Málaga", "Spain");
 
             // Devolver la lista de gimnasios cercanos como respuesta JSON
-            return Response.ok(gimnasiosCercanos).build();
+            return javax.ws.rs.core.Response.ok(gimnasiosCercanos).build();
         } catch (Exception e) {
-            return Response.serverError().build();
+            return javax.ws.rs.core.Response.serverError().build();
         }
     }
 
-    private List<String> obtenerGimnasiosCercanosDesdeGooglePlaces(String latitud, String longitud) throws IOException {
-        // Aquí se realizaría la llamada a la API de Google Places para obtener los gimnasios cercanos
-        // Utiliza las coordenadas de latitud y longitud para filtrar los resultados
-        // Aquí se devuelve una lista de nombres de gimnasios como ejemplo
-        List<String> gimnasiosCercanos = new ArrayList<>();
-        gimnasiosCercanos.add("Gimnasio 1");
-        gimnasiosCercanos.add("Gimnasio 2");
-        gimnasiosCercanos.add("Gimnasio 3");
-        return gimnasiosCercanos;
+    private List<String> obtenerGimnasiosCercanosDesdeNominatim(String ciudad, String pais) throws IOException {
+        OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder()
+                .url("https://nominatim.openstreetmap.org/search?city=" + ciudad + "&country=" + pais + "&format=json&limit=50&q=gym")
+                .build();
+
+        try (Response response = client.newCall(request).execute()) {
+            // Aquí puedes parsear la respuesta JSON para obtener los nombres de los gimnasios
+            String jsonData = response.body().string();
+            return parseGimnasios(jsonData);
+        }
+    }
+
+    private List<String> parseGimnasios(String jsonData) {
+        List<String> gimnasios = new ArrayList<>();
+
+        JsonArray jsonArray = JsonParser.parseString(jsonData).getAsJsonArray();
+
+        for (JsonElement jsonElement : jsonArray) {
+            JsonObject jsonObject = jsonElement.getAsJsonObject();
+            String nombre = jsonObject.get("display_name").getAsString();
+            gimnasios.add(nombre);
+        }
+
+        return gimnasios;
     }
 }
