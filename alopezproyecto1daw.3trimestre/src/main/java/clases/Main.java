@@ -12,6 +12,7 @@ import java.util.LinkedHashSet;
 
 import enums.Categoria;
 import javax.imageio.ImageIO;
+import javax.swing.SwingUtilities;
 
 import interfaces.PantallaCrearReceta;
 import interfaces.PantallaCrearRutina;
@@ -19,6 +20,7 @@ import interfaces.PantallaEjercicio;
 import interfaces.PantallaLogin;
 import interfaces.PantallaRegistro;
 import interfaces.PantallaVerRecetas;
+import interfaces.PantallaVerRutina;
 import utilidad.DAO;
 public class Main {
 	
@@ -243,17 +245,28 @@ public class Main {
         PantallaVerRecetas pantallaVerRecetas = new PantallaVerRecetas();
 		pantallaVerRecetas.mostrarInterfaz();
 		
-		PantallaCrearRutina pantallaCrearRutina = new PantallaCrearRutina();
-        pantallaCrearRutina.mostrarInterfaz();
 		
+		new PantallaVerRutina().setVisible(true);
         PantallaLogin pantallaLogin = new PantallaLogin();
+        pantallaLogin.setVisible(true);
+        PantallaEjercicio pantalla = new PantallaEjercicio();
+        pantalla.mostrar();
+        PantallaLogin pantallaLogin = new PantallaLogin();
+        pantallaLogin.setVisible(true);
+        
+         PantallaLogin pantallaLogin = new PantallaLogin();
+	        pantallaLogin.setVisible(true);
+	        
+	        PantallaLogin pantallaLogin = new PantallaLogin();
         pantallaLogin.setVisible(true);
 		
 */
 		
-		
-		PantallaLogin pantallaLogin = new PantallaLogin();
-        pantallaLogin.setVisible(true);
-		
-    }
-}
+		 SwingUtilities.invokeLater(new Runnable() {
+	            public void run() {
+	                PantallaRegistro pantallaRegistro = new PantallaRegistro();
+	                pantallaRegistro.setVisible(true);
+	            }
+	        });
+	    }
+	}

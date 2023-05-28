@@ -8,7 +8,7 @@ public class PantallaPrincipal extends JFrame {
 
     public PantallaPrincipal() {
         // Set the window to full screen
-        setExtendedState(JFrame.MAXIMIZED_BOTH); 
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         getContentPane().setBackground(new Color(50, 50, 50)); // Set a darker background color
 
@@ -29,26 +29,29 @@ public class PantallaPrincipal extends JFrame {
 
         CustomButton botonCrearRecetas = createButton("Crear Recetas", font);
         botonCrearRecetas.addActionListener(e -> {
-            new PantallaCrearReceta().setVisible(true);
+            PantallaCrearReceta pantallaCrearReceta = new PantallaCrearReceta();
+            pantallaCrearReceta.mostrarInterfaz();
             this.setVisible(false);
         });
 
         CustomButton botonVerRecetas = createButton("Ver Tus Recetas", font);
         botonVerRecetas.addActionListener(e -> {
-            new PantallaVerRecetas().setVisible(true);
+            PantallaVerRecetas pantallaVerRecetas = new PantallaVerRecetas();
+            pantallaVerRecetas.mostrarInterfaz();
             this.setVisible(false);
         });
 
         CustomButton botonCrearRutina = createButton("Crear Rutina", font);
         botonCrearRutina.addActionListener(e -> {
-            new PantallaCrearRutina().setVisible(true);
+            PantallaCrearRutina pantallaCrearRutina = new PantallaCrearRutina();
+            pantallaCrearRutina.mostrarInterfaz();
             this.setVisible(false);
         });
 
         CustomButton botonVerRutina = createButton("Ver Tu Rutina", font);
         botonVerRutina.addActionListener(e -> {
-            new PantallaVerRutina().setVisible(true);
-            this.setVisible(false);
+        	 new PantallaVerRutina().setVisible(true);
+             this.setVisible(false);
         });
 
         CustomButton botonActualizarDatos = createButton("Actualiza tus datos", font);
