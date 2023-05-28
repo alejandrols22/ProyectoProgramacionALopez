@@ -16,7 +16,9 @@ import java.util.Random;
 
 public class PantallaCrearRutina extends JFrame {
     private static final String CONFIG_FILE = "bdconfig.ini";
-
+    private JPanel centerPanel;
+    
+    
     public class Ejercicio {
         private String nombre;
         private float caloriasPorMinuto;
@@ -153,7 +155,21 @@ public class PantallaCrearRutina extends JFrame {
     }
 
     private void mostrarEjerciciosSeleccionados(float caloriasObjetivo) {
-        List<Ejercicio> ejerciciosSeleccionados = seleccionarEjerciciosParaObjetivo(caloriasObjetivo);
+    	JButton volverButton = new JButton("Volver a la Pantalla Principal");
+        volverButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Asumiendo que PantallaPrincipal tiene un método estático llamado mostrarInterfaz
+            	PantallaPrincipal pantallaPrincipal = new PantallaPrincipal();
+                pantallaPrincipal.setVisible(true);
+                dispose();  // Cierra esta ventana
+            }
+        });
+    	
+    	
+    	
+    	
+    	List<Ejercicio> ejerciciosSeleccionados = seleccionarEjerciciosParaObjetivo(caloriasObjetivo);
 
         JTextArea textArea = new JTextArea();
         textArea.setEditable(false);
@@ -173,7 +189,8 @@ public class PantallaCrearRutina extends JFrame {
             }
         });
         getContentPane().add(guardarButton, BorderLayout.SOUTH);
-
+        getContentPane().add(volverButton, BorderLayout.WEST);
+        
         revalidate();
         repaint();
     }
@@ -202,20 +219,55 @@ public class PantallaCrearRutina extends JFrame {
             }
         });
 
-        JPanel opcionesPanel = new JPanel(new GridLayout(1, 2));
-        opcionesPanel.add(labelCaloriasObjetivo);
-        opcionesPanel.add(textFieldCaloriasObjetivo);
+     // Panel superior
+        
+        
+        JPanel opcionesPanel = new JPanel(new BorderLayout());
+        opcionesPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        
+        opcionesPanel.add(labelCaloriasObjetivo, BorderLayout.WEST);
+        opcionesPanel.add(textFieldCaloriasObjetivo, BorderLayout.CENTER);
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        JButton volverButton = new JButton("Volver a la Pantalla Principal");
+        volverButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Asumiendo que PantallaPrincipal tiene un método estático llamado mostrarInterfaz
+            	PantallaPrincipal pantallaPrincipal = new PantallaPrincipal();
+                pantallaPrincipal.setVisible(true);
+                dispose();  // Cierra esta ventana
+            }
+        });
+        
+        opcionesPanel.add(calcularButton, BorderLayout.EAST);
+        opcionesPanel.add(volverButton, BorderLayout.NORTH);
+        
+     // Panel central para mostrar ejercicios
+        centerPanel = new JPanel(new BorderLayout());
+        
+        
+        
         
         JPanel buttonsPanel = new JPanel(new FlowLayout());
+        buttonsPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         buttonsPanel.add(calcularButton);
+        buttonsPanel.add(volverButton);
         
 
         
         
+     // Contenedor principal
+        getContentPane().setLayout(new BorderLayout());
         getContentPane().add(opcionesPanel, BorderLayout.NORTH);
-        getContentPane().setLayout(new FlowLayout(FlowLayout.CENTER));
-        getContentPane().add(calcularButton);
-        
+        getContentPane().add(buttonsPanel, BorderLayout.SOUTH);
         
         
         
@@ -233,3 +285,4 @@ public class PantallaCrearRutina extends JFrame {
         });
     }
 }
+

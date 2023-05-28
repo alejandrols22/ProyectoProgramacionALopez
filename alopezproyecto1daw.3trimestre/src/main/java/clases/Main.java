@@ -259,14 +259,22 @@ public class Main {
 	        
 	        PantallaLogin pantallaLogin = new PantallaLogin();
         pantallaLogin.setVisible(true);
-		
-*/
-		
-		 SwingUtilities.invokeLater(new Runnable() {
+        
+        SwingUtilities.invokeLater(new Runnable() {
 	            public void run() {
 	                PantallaRegistro pantallaRegistro = new PantallaRegistro();
 	                pantallaRegistro.setVisible(true);
 	            }
 	        });
+		
+*/
+		
+		 
+		SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                PantallaRegistro pantallaRegistro = new PantallaRegistro();
+                pantallaRegistro.setVisible(true);
+            }
+        });
 	    }
 	}
