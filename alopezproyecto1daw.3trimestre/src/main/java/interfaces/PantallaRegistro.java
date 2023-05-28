@@ -38,6 +38,10 @@ public class PantallaRegistro extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         getContentPane().setBackground(new Color(50, 50, 50));
 
+        
+       
+        
+        
         // Paneles para la organización de los componentes
         JPanel contentPanel = new JPanel(new GridBagLayout());
         contentPanel.setBackground(new Color(50, 50, 50));
@@ -120,6 +124,9 @@ public class PantallaRegistro extends JFrame {
         botonRegistrarse = createButton("Registrarse");
         botonYaTengoCuenta = createButton("Ya tengo cuenta");
 
+        
+        c.weightx = 1.0;
+        c.fill = GridBagConstraints.HORIZONTAL;
         // Añadiendo los componentes al panel
         c.gridx = 0; c.gridy = 0;
         contentPanel.add(labelEmail, c);
