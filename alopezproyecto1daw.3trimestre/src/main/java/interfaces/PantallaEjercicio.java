@@ -25,9 +25,9 @@ public class PantallaEjercicio {
 
         // Rutas relativas de los archivos GIF
         gifPaths = new String[] {
-                "src/main/java/gifs/burpe.gif",
-                "src/main/java/gifs/yoga.gif",
-                "src/main/java/gifs/gato.gif"
+                "src/main/java/gifs/RESISTENCIA/2Burpee.gif",
+                "src/main/java/gifs/RESISTENCIA/4MarchaEstacionaria.gif",
+                "src/main/java/gifs/RESISTENCIA/6EjercicioStep.gif"
         };
         gifIndex = 0;
 

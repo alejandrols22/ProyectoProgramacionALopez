@@ -53,6 +53,14 @@ public class PantallaPrincipal extends JFrame {
         	 new PantallaVerRutina().setVisible(true);
              this.setVisible(false);
         });
+        
+        
+        CustomButton botonRealizarRutina = createButton("Haz Tu Rutina", font);
+        botonRealizarRutina.addActionListener(e -> {
+        	PantallaEjercicio pantallaEjercicio = new PantallaEjercicio();
+            pantallaEjercicio.mostrar();
+        });
+        
 
         CustomButton botonActualizarDatos = createButton("Actualiza tus datos", font);
         botonActualizarDatos.addActionListener(e -> {
@@ -65,6 +73,7 @@ public class PantallaPrincipal extends JFrame {
         buttonPanel.add(botonVerRecetas);
         buttonPanel.add(botonCrearRutina);
         buttonPanel.add(botonVerRutina);
+        buttonPanel.add(botonRealizarRutina);
         buttonPanel.add(botonActualizarDatos);
 
         this.add(buttonPanel, BorderLayout.CENTER);
