@@ -16,14 +16,16 @@ public class PantallaEjercicio {
     private Clip audioClip;
     private JButton audioButton;
     private boolean isPlaying;
+    private String[] songPaths;
+    private String[] songNames;
+    private JComboBox<String> songComboBox;
+    private JPanel panel;
 
     public PantallaEjercicio() {
-        // Crea una nueva ventana (JFrame)
         frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(500, 500); // Ajusta el tamaño según sea necesario
+        frame.setSize(500, 500);
 
-        // Rutas relativas de los archivos GIF
         gifPaths = new String[] {
                 "src/main/java/gifs/RESISTENCIA/2Burpee.gif",
                 "src/main/java/gifs/RESISTENCIA/4MarchaEstacionaria.gif",
@@ -31,15 +33,12 @@ public class PantallaEjercicio {
         };
         gifIndex = 0;
 
-        // Carga el primer GIF en un ImageIcon y crea un JLabel para mostrarlo
         ImageIcon icon = new ImageIcon(gifPaths[gifIndex]);
         label = new JLabel(icon);
 
-        // Crea un panel para contener los botones
-        JPanel panel = new JPanel();
+        panel = new JPanel();
         panel.setLayout(new FlowLayout(FlowLayout.CENTER));
 
-        // Crea el botón "Siguiente" y agrega un ActionListener para cambiar el GIF
         JButton siguienteButton = new JButton("Siguiente");
         siguienteButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -53,38 +52,58 @@ public class PantallaEjercicio {
         });
         panel.add(siguienteButton);
 
-        // Crea el botón "Reproducir/Detener audio" y agrega un ActionListener
+        songPaths = new String[] {
+                "src/main/java/canciones/1Phonk.wav",
+                "src/main/java/canciones/2Motivacional.wav",
+                "src/main/java/canciones/3TheChain.wav",
+                "src/main/java/canciones/4MrBlueSky.wav",
+                "src/main/java/canciones/5TotoAfrica.wav",
+                "src/main/java/canciones/6Maniac.wav",
+                "src/main/java/canciones/7EyeOfTiger.wav"
+                
+        };
+
+        songNames = new String[] {
+                "Cancion Phonk",
+                "Cancion Motivacional",
+                "The Chain",
+                "Mr Blue Sky",
+                "Toto Africa",
+                "Maniac",
+                "The Eye of The Tiger"
+                // Add more song names corresponding to the paths above...
+        };
+
+        songComboBox = new JComboBox<>(songNames);
+        panel.add(songComboBox);
+
         audioButton = new JButton("Reproducir audio");
         audioButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (isPlaying) {
                     stopAudio();
                 } else {
-                    playAudio();
+                    int selectedSongIndex = songComboBox.getSelectedIndex();
+                    playAudio(songPaths[selectedSongIndex]);
                 }
             }
         });
         panel.add(audioButton);
 
-        // Agrega el JLabel y el panel al contenedor principal de la ventana
         frame.getContentPane().add(label, BorderLayout.CENTER);
         frame.getContentPane().add(panel, BorderLayout.SOUTH);
     }
 
-    private void playAudio() {
+    private void playAudio(String songPath) {
         try {
-            // Carga el archivo de audio
-            File audioFile = new File("src/main/java/canciones/cancion.wav");
+            File audioFile = new File(songPath);
             audioClip = AudioSystem.getClip();
             audioClip.open(AudioSystem.getAudioInputStream(audioFile));
 
-            // Reproduce el audio en un bucle continuo
             audioClip.loop(Clip.LOOP_CONTINUOUSLY);
 
-            // Actualiza el texto del botón
             audioButton.setText("Detener audio");
 
-            // Marca el estado de reproducción como activo
             isPlaying = true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -98,15 +117,17 @@ public class PantallaEjercicio {
             audioClip.close();
         }
 
-        // Actualiza el texto del botón
         audioButton.setText("Reproducir audio");
 
-        // Marca el estado de reproducción como inactivo
         isPlaying = false;
     }
 
     public void mostrar() {
-        // Hace visible la ventana
         frame.setVisible(true);
     }
+
+    public static void main(String[] args) {
+        new PantallaEjercicio().mostrar();
+    }
 }
+
