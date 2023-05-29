@@ -32,14 +32,10 @@ public class PantallaVerRecetas extends JFrame {
 
         try {
             try {
-				connection = getConnection();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+                connection = getConnection();
+            } catch (SQLException | IOException e) {
+                e.printStackTrace();
+            }
             statement = connection.createStatement();
             resultSet = statement.executeQuery("SELECT * FROM Receta");
 
@@ -98,6 +94,16 @@ public class PantallaVerRecetas extends JFrame {
 
             // Agrega el JScrollPane al JFrame
             getContentPane().add(scrollPane, BorderLayout.CENTER);
+
+            // Crea el botón para volver a PantallaPrincipal
+            JButton backButton = new JButton("Volver a PantallaPrincipal");
+            backButton.addActionListener(e -> {
+            	new PantallaPrincipal().setVisible(true);
+                dispose();
+                dispose(); // Cierra la ventana actual
+            });
+            getContentPane().add(backButton, BorderLayout.SOUTH); // Agrega el botón debajo de la tabla
+
         } catch (SQLException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error al cargar las recetas", "Error", JOptionPane.ERROR_MESSAGE);
@@ -116,11 +122,10 @@ public class PantallaVerRecetas extends JFrame {
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             setTitle("Pantalla Ver Recetas");
             try {
-				initComponents();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+                initComponents();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             pack();
             setLocationRelativeTo(null);
             setVisible(true);
@@ -134,5 +139,4 @@ public class PantallaVerRecetas extends JFrame {
         }
     }
 }
-
 

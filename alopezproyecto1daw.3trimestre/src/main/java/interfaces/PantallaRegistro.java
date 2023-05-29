@@ -17,19 +17,19 @@ import enums.ObjetivoUsuario;
 
 public class PantallaRegistro extends JFrame {
 
-    private JTextField textEmail;
+    JTextField textEmail;
     private JTextField textNombre;
-    private JTextField textTelefono;
-    private JPasswordField textPassword;
+    JTextField textTelefono;
+    JPasswordField textPassword;
     private JTextField textEdad;
-    private JTextField textPeso;
-    private JTextField textAltura;
-    private JComboBox<Character> comboSexo;
-    private JComboBox<NivelActividad> comboNivelActividad;
-    private JComboBox<ObjetivoUsuario> comboObjetivo;
-    private JSpinner spinnerObjetivoDiarioCalorias;
-    private JButton botonRegistrarse;
-    private JButton botonYaTengoCuenta;
+    JTextField textPeso;
+    JTextField textAltura;
+    JComboBox<Character> comboSexo;
+    JComboBox<NivelActividad> comboNivelActividad;
+    JComboBox<ObjetivoUsuario> comboObjetivo;
+    JSpinner spinnerObjetivoDiarioCalorias;
+    protected JButton botonRegistrarse;
+    protected JButton botonYaTengoCuenta;
 
     public PantallaRegistro() {
         // Configuración inicial de la ventana
@@ -271,7 +271,7 @@ public class PantallaRegistro extends JFrame {
         });
     }
 
-    private JButton createButton(String text) {
+    protected JButton createButton(String text) {
         JButton button = new CustomButton(text);
         button.setFont(new Font("Arial", Font.BOLD, 35)); // bigger font
         button.setBackground(Color.WHITE);
