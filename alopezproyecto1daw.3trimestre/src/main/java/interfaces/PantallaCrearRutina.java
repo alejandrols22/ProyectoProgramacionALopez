@@ -17,8 +17,8 @@ import java.util.Random;
 public class PantallaCrearRutina extends JFrame {
     private static final String CONFIG_FILE = "bdconfig.ini";
     private JPanel centerPanel;
-    
-    
+    private boolean rutinaCreada = false;
+
     public class Ejercicio {
         private String nombre;
         private float caloriasPorMinuto;
@@ -67,7 +67,7 @@ public class PantallaCrearRutina extends JFrame {
 
         try (Connection connection = getConnection()) {
             Statement statement = connection.createStatement();
-           
+
             ResultSet resultSet = statement.executeQuery("SELECT e.nombre, a.calorias_quemadas_por_minuto, a.duracion, a.categoria FROM Ejercicio a JOIN Entidad e ON a.entidadId = e.id");
             while (resultSet.next()) {
                 String nombreEjercicio = resultSet.getString("nombre");
@@ -155,21 +155,18 @@ public class PantallaCrearRutina extends JFrame {
     }
 
     private void mostrarEjerciciosSeleccionados(float caloriasObjetivo) {
-    	JButton volverButton = new JButton("Volver a la Pantalla Principal");
+        JButton volverButton = new JButton("Volver a la Pantalla Principal");
         volverButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Asumiendo que PantallaPrincipal tiene un método estático llamado mostrarInterfaz
-            	PantallaPrincipal pantallaPrincipal = new PantallaPrincipal();
+                PantallaPrincipal pantallaPrincipal = new PantallaPrincipal();
                 pantallaPrincipal.setVisible(true);
                 dispose();  // Cierra esta ventana
             }
         });
-    	
-    	
-    	
-    	
-    	List<Ejercicio> ejerciciosSeleccionados = seleccionarEjerciciosParaObjetivo(caloriasObjetivo);
+
+        List<Ejercicio> ejerciciosSeleccionados = seleccionarEjerciciosParaObjetivo(caloriasObjetivo);
 
         JTextArea textArea = new JTextArea();
         textArea.setEditable(false);
@@ -188,9 +185,20 @@ public class PantallaCrearRutina extends JFrame {
                 insertarRutinaEnBaseDatos(ejerciciosSeleccionados);
             }
         });
-        getContentPane().add(guardarButton, BorderLayout.SOUTH);
+
+        if (rutinaCreada) {
+            getContentPane().add(guardarButton, BorderLayout.SOUTH);
+        }
+
         getContentPane().add(volverButton, BorderLayout.WEST);
-        
+
+        guardarButton.setBackground(Color.GRAY); // Establecer fondo gris al botón "Guardar rutina"
+        volverButton.setBackground(Color.GRAY); // Establecer fondo gris al botón "Volver a la Pantalla Principal"
+
+        // Establecer el color de texto blanco para los botones
+        guardarButton.setForeground(Color.WHITE);
+        volverButton.setForeground(Color.WHITE);
+
         revalidate();
         repaint();
     }
@@ -204,74 +212,51 @@ public class PantallaCrearRutina extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 float caloriasObjetivo = Float.parseFloat(textFieldCaloriasObjetivo.getText());
-                
-                List<Ejercicio> ejerciciosSeleccionados = seleccionarEjerciciosParaObjetivo(caloriasObjetivo);
-                
-                JTextArea textArea = new JTextArea();
-                textArea.setEditable(false);
-                
-                for (Ejercicio ejercicio : ejerciciosSeleccionados) {
-                    textArea.append(ejercicio.getNombre() + " - " + ejercicio.getDuracion() + " minutos\n");
-                }
-                
+
                 getContentPane().removeAll(); // Eliminar los componentes anteriores
                 mostrarEjerciciosSeleccionados(caloriasObjetivo);
+
+                rutinaCreada = true; // Cambiar el estado de rutinaCreada a true
             }
         });
 
-     // Panel superior
-        
-        
+        // Panel superior
         JPanel opcionesPanel = new JPanel(new BorderLayout());
         opcionesPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        
+
+        opcionesPanel.setBackground(Color.GRAY); // Establecer el color de fondo gris
+
         opcionesPanel.add(labelCaloriasObjetivo, BorderLayout.WEST);
         opcionesPanel.add(textFieldCaloriasObjetivo, BorderLayout.CENTER);
-        
-        
-        
-        
-        
-        
-        
-        
-        
+        opcionesPanel.add(calcularButton, BorderLayout.EAST);
+
+        // Panel central para mostrar ejercicios
+        centerPanel = new JPanel(new BorderLayout());
+        centerPanel.setBackground(new Color(50, 50, 50)); // Establecer el color de fondo gris oscuro
+
+        // Contenedor principal
+        getContentPane().setLayout(new BorderLayout());
+        getContentPane().setBackground(Color.GRAY); // Establecer el color de fondo gris
+        getContentPane().add(opcionesPanel, BorderLayout.NORTH);
+        getContentPane().add(centerPanel, BorderLayout.CENTER);
+
         JButton volverButton = new JButton("Volver a la Pantalla Principal");
         volverButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Asumiendo que PantallaPrincipal tiene un método estático llamado mostrarInterfaz
-            	PantallaPrincipal pantallaPrincipal = new PantallaPrincipal();
+                PantallaPrincipal pantallaPrincipal = new PantallaPrincipal();
                 pantallaPrincipal.setVisible(true);
                 dispose();  // Cierra esta ventana
             }
         });
-        
-        opcionesPanel.add(calcularButton, BorderLayout.EAST);
-        opcionesPanel.add(volverButton, BorderLayout.NORTH);
-        
-     // Panel central para mostrar ejercicios
-        centerPanel = new JPanel(new BorderLayout());
-        
-        
-        
-        
-        JPanel buttonsPanel = new JPanel(new FlowLayout());
-        buttonsPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        buttonsPanel.add(calcularButton);
-        buttonsPanel.add(volverButton);
-        
 
-        
-        
-     // Contenedor principal
-        getContentPane().setLayout(new BorderLayout());
-        getContentPane().add(opcionesPanel, BorderLayout.NORTH);
-        getContentPane().add(buttonsPanel, BorderLayout.SOUTH);
-        
-        
-        
-        
+        getContentPane().add(volverButton, BorderLayout.WEST);
+
+        // Resto del código para establecer los colores y estilos de los botones
+
+        revalidate();
+        repaint();
     }
 
     public void mostrarInterfaz() {
@@ -280,9 +265,11 @@ public class PantallaCrearRutina extends JFrame {
             setTitle("Pantalla Crear Rutina");
             initComponents();
             pack();
+            setExtendedState(JFrame.MAXIMIZED_BOTH);
             setLocationRelativeTo(null);
             setVisible(true);
         });
     }
 }
+
 
