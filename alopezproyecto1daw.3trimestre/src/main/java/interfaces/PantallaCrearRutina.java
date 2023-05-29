@@ -159,7 +159,7 @@ public class PantallaCrearRutina extends JFrame {
         volverButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Asumiendo que PantallaPrincipal tiene un método estático llamado mostrarInterfaz
+                
                 PantallaPrincipal pantallaPrincipal = new PantallaPrincipal();
                 pantallaPrincipal.setVisible(true);
                 dispose();  // Cierra esta ventana
@@ -244,7 +244,7 @@ public class PantallaCrearRutina extends JFrame {
         volverButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Asumiendo que PantallaPrincipal tiene un método estático llamado mostrarInterfaz
+                
                 PantallaPrincipal pantallaPrincipal = new PantallaPrincipal();
                 pantallaPrincipal.setVisible(true);
                 dispose();  // Cierra esta ventana
@@ -253,7 +253,7 @@ public class PantallaCrearRutina extends JFrame {
 
         getContentPane().add(volverButton, BorderLayout.WEST);
 
-        // Resto del código para establecer los colores y estilos de los botones
+       
 
         revalidate();
         repaint();

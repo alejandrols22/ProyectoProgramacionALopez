@@ -14,20 +14,20 @@ import java.util.LinkedHashSet;
 public class PantallaPrincipal extends JFrame {
 
     public PantallaPrincipal() {
-        // Set the window to full screen
+        
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         getContentPane().setBackground(new Color(50, 50, 50)); // Set a darker background color
 
-        // Use a GridLayout for the buttons
+        
         JPanel buttonPanel = new JPanel(new GridLayout(6, 1, 20, 20));
         buttonPanel.setBackground(new Color(50, 50, 50));
         buttonPanel.setBorder(BorderFactory.createEmptyBorder(200, 500, 200, 500));
 
-        // Use a custom Font
+        
         Font font = new Font("Arial", Font.PLAIN, 25);
 
-        // Use custom buttons
+        
         CustomButton botonVerProgreso = createButton("Ver Progreso", font);
         botonVerProgreso.addActionListener(e -> {
             new PantallaVerProgreso().setVisible(true);
@@ -101,7 +101,7 @@ public class PantallaPrincipal extends JFrame {
         return button;
     }
 
-    // Custom button class
+    
     public class CustomButton extends JButton {
         public CustomButton(String text) {
             super(text);

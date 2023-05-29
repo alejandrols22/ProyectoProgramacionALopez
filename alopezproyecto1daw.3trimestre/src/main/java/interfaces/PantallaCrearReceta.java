@@ -247,7 +247,7 @@ public class PantallaCrearReceta extends JFrame {
 
             String query = "INSERT INTO Receta (entidadId, caloriasProteinas, caloriasCarbohidratos, caloriasGrasas, alimentos) VALUES (?, ?, ?, ?, ?)";
             PreparedStatement statement = connection.prepareStatement(query);
-            statement.setInt(1, 1);  // Reemplaza el valor 1 por el valor correcto de entidadId
+            statement.setInt(1, 1);  
             statement.setFloat(2, caloriasProteinas);
             statement.setFloat(3, caloriasCarbohidratos);
             statement.setFloat(4, caloriasGrasas);
@@ -299,7 +299,7 @@ public class PantallaCrearReceta extends JFrame {
                     super.insertString(offset, str, attr);
                 }
             } catch (NumberFormatException e) {
-                // Ignore non-numeric input
+               
             }
         }
     }

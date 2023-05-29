@@ -356,23 +356,23 @@ public class Usuario extends Entidad {
 	}
 
 	public void calcular_calorias_diarias() {
-		// implementación
+		
 	}
 
 	public void agregar_alimento(Alimento alimento) {
-		// implementación
+		
 	}
 
 	public void eliminar_alimento(Alimento alimento) {
-		// implementación
+		
 	}
 
 	public void crear_receta(Receta receta) {
-		// implementación
+		
 	}
 
 	public void eliminar_receta(Receta receta) {
-		// implementación
+		
 	}
 }
 

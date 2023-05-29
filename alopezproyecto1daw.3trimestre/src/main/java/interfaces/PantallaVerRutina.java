@@ -104,7 +104,7 @@ public class PantallaVerRutina extends JFrame {
         try {
             Object[][] data = getData();
 
-            // Set the background color to RGB(50, 50, 50)
+            
             getContentPane().setBackground(new Color(50, 50, 50));
 
             String[] columnNames = {"duracion", "nombre", "categoria"};
@@ -113,7 +113,7 @@ public class PantallaVerRutina extends JFrame {
             JScrollPane scrollPane = new JScrollPane(rutinasTable);
             getContentPane().add(scrollPane, BorderLayout.CENTER);
 
-            // Add a "Volver" button at the bottom
+            
             JButton volverButton = new JButton("Volver");
             volverButton.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {

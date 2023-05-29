@@ -61,8 +61,8 @@ public abstract class DAO {
 
 	public static int insertar(String tabla, HashMap<String, Object> columnas) throws SQLException {
 		Statement smt = conectar();
-		// insert into cliente (email,nombre,contraseña) values ('a@a.a','paco','mer');
-		// insert into cliente (email,telefono,contraseña,nombre) values (
+		
+		
 		String consulta = "insert into " + tabla + " (";
 		Iterator it = columnas.keySet().iterator();
 		while (it.hasNext()) {

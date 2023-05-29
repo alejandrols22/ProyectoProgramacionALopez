@@ -26,8 +26,7 @@ public class PantallaImagen extends JFrame {
         // Configurar el diseño del panel
         panelFondo.setLayout(new BorderLayout());
 
-        // Añadir el contenido adicional al panelFondo
-        // ...
+      
 
         // Crear el botón "Volver"
         JButton botonVolver = new JButton("Volver");

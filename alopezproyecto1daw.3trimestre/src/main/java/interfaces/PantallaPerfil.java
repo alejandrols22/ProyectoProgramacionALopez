@@ -44,11 +44,11 @@ public class PantallaPerfil extends JFrame {
             int rowCount = resultSet.getRow();
             resultSet.beforeFirst();
 
-            Object[][] data = new Object[rowCount][columnCount - 1]; // Reducir el número de columnas en 1
+            Object[][] data = new Object[rowCount][columnCount - 1]; 
 
             int rowIndex = 0;
             while (resultSet.next()) {
-                for (int i = 2; i <= columnCount; i++) { // Empezar desde 2 para omitir el ID
+                for (int i = 2; i <= columnCount; i++) { 
                     data[rowIndex][i - 2] = resultSet.getObject(i);
                 }
                 rowIndex++;
