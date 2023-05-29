@@ -33,8 +33,6 @@ public class PantallaVerProgreso extends JFrame {
             new PantallaPrincipal().setVisible(true);
             this.setVisible(false);
         });
-        
-        
 
         // Crea el mensaje para el usuario
         JLabel userMessage = new JLabel("Para que la gráfica muestre datos, el usuario debe actualizar sus datos en PantallaActualizarDatos");
@@ -48,17 +46,18 @@ public class PantallaVerProgreso extends JFrame {
         mainPanel.add(userMessage, BorderLayout.NORTH);
 
         setContentPane(mainPanel);
+        setExtendedState(JFrame.MAXIMIZED_BOTH); // Abre la ventana maximizada
     }
 
     private JFreeChart createChart(final TimeSeriesCollection dataset) {
         return ChartFactory.createTimeSeriesChart(
-            "Progreso de peso",
-            "Fecha",
-            "Peso",
-            dataset,
-            true,
-            true,
-            false
+                "Progreso de peso",
+                "Fecha",
+                "Peso",
+                dataset,
+                true,
+                true,
+                false
         );
     }
 
