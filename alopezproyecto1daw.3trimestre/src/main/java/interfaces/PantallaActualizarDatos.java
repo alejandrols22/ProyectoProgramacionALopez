@@ -10,6 +10,7 @@ import java.util.HashMap;
 
 import enums.NivelActividad;
 import enums.ObjetivoUsuario;
+import utilidad.DAO;
 
 public class PantallaActualizarDatos extends JFrame {
 
