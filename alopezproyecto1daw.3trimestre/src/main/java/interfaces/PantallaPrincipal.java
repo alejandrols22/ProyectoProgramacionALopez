@@ -1,8 +1,15 @@
 package interfaces;
 
 import javax.swing.*;
+
+import utilidad.DAO;
+
 import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
 
 public class PantallaPrincipal extends JFrame {
 
@@ -69,10 +76,10 @@ public class PantallaPrincipal extends JFrame {
         });
         
         CustomButton botonVerPerfil = createButton("Ver Perfil", font);
-        botonActualizarDatos.addActionListener(e -> {
-            new PantallaPerfil().setVisible(true);
-            this.setVisible(false);
-        });
+        botonVerPerfil.addActionListener(e -> {
+        	PantallaPerfil pantalla = new PantallaPerfil();
+            pantalla.setVisible(true);
+         });
 
         buttonPanel.add(botonVerProgreso);
         buttonPanel.add(botonCrearRecetas);
@@ -81,9 +88,11 @@ public class PantallaPrincipal extends JFrame {
         buttonPanel.add(botonVerRutina);
         buttonPanel.add(botonRealizarRutina);
         buttonPanel.add(botonActualizarDatos);
+        buttonPanel.add(botonVerPerfil);
 
         this.add(buttonPanel, BorderLayout.CENTER);
     }
+  
 
     private CustomButton createButton(String text, Font font) {
         CustomButton button = new CustomButton(text);

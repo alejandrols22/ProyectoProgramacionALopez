@@ -43,35 +43,35 @@ public class PantallaActualizarDatos extends JFrame {
         // Configuración de los componentes
         JLabel telefonoLabel = new JLabel("Telefono:");
         telefonoLabel.setForeground(Color.WHITE);
-        telefonoLabel.setFont(new Font("Arial", Font.PLAIN, 30)); // bigger font
+        telefonoLabel.setFont(new Font("Arial", Font.PLAIN, 30)); 
         telefonoField = new JTextField(20);
-        telefonoField.setFont(new Font("Arial", Font.PLAIN, 30)); // bigger font
+        telefonoField.setFont(new Font("Arial", Font.PLAIN, 30)); 
 
         JLabel contrasenaLabel = new JLabel("Contraseña:");
         contrasenaLabel.setForeground(Color.WHITE);
-        contrasenaLabel.setFont(new Font("Arial", Font.PLAIN, 30)); // bigger font
+        contrasenaLabel.setFont(new Font("Arial", Font.PLAIN, 30)); 
         contrasenaField = new JTextField(20);
-        contrasenaField.setFont(new Font("Arial", Font.PLAIN, 30)); // bigger font
+        contrasenaField.setFont(new Font("Arial", Font.PLAIN, 30)); 
 
         JLabel pesoLabel = new JLabel("Peso:");
         pesoLabel.setForeground(Color.WHITE);
-        pesoLabel.setFont(new Font("Arial", Font.PLAIN, 30)); // bigger font
+        pesoLabel.setFont(new Font("Arial", Font.PLAIN, 30)); 
         pesoField = new JTextField(20);
-        pesoField.setFont(new Font("Arial", Font.PLAIN, 30)); // bigger font
+        pesoField.setFont(new Font("Arial", Font.PLAIN, 30)); 
 
         JLabel alturaLabel = new JLabel("Altura:");
         alturaLabel.setForeground(Color.WHITE);
-        alturaLabel.setFont(new Font("Arial", Font.PLAIN, 30)); // bigger font
+        alturaLabel.setFont(new Font("Arial", Font.PLAIN, 30)); 
         alturaField = new JTextField(20);
-        alturaField.setFont(new Font("Arial", Font.PLAIN, 30)); // bigger font
+        alturaField.setFont(new Font("Arial", Font.PLAIN, 30)); 
 
         JLabel sexoLabel = new JLabel("Sexo:");
         sexoLabel.setForeground(Color.WHITE);
-        sexoLabel.setFont(new Font("Arial", Font.PLAIN, 30)); // bigger font
+        sexoLabel.setFont(new Font("Arial", Font.PLAIN, 30)); 
         sexoField = new JComboBox<>();
         sexoField.addItem('h');
         sexoField.addItem('m');
-        sexoField.setFont(new Font("Arial", Font.PLAIN, 30)); // bigger font
+        sexoField.setFont(new Font("Arial", Font.PLAIN, 30));
 
         JLabel nivelActividadLabel = new JLabel("Nivel Actividad:");
         nivelActividadLabel.setForeground(Color.WHITE);

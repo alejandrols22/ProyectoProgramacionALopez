@@ -16,6 +16,8 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Map.Entry;
 
+import com.mysql.cj.jdbc.result.ResultSetMetaData;
+
 public abstract class DAO {
 	private static Connection conexion;
 
@@ -151,6 +153,19 @@ public abstract class DAO {
 	    desconectar(smt);
 	    return filas;
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	public static int actualizar(String tabla, HashMap<String, Object> datosAModificar,
 			HashMap<String, Object> restricciones) throws SQLException {
 		String query = "update " + tabla + " set ";

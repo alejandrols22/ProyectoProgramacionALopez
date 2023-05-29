@@ -3,6 +3,8 @@ package interfaces;
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -31,14 +33,12 @@ public class PantallaVerRutina extends JFrame {
 
         try {
             try {
-				connection = getConnection();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+                connection = getConnection();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
             resultSet = statement.executeQuery("SELECT re.*, ent.nombre, ej.categoria " +
                     "FROM Rutina_Ejercicio re " +
@@ -50,19 +50,35 @@ public class PantallaVerRutina extends JFrame {
             ResultSetMetaData metaData = resultSet.getMetaData();
             int columnCount = metaData.getColumnCount();
 
+            // Excluir las columnas "rutinaId" y "ejercicioId" de los nombres de columna
+            String[] columnNames = new String[columnCount - 2];
+            int columnIndex = 0;
+            for (int i = 1; i <= columnCount; i++) {
+                String columnName = metaData.getColumnName(i);
+                if (!columnName.equals("rutinaId") && !columnName.equals("ejercicioId")) {
+                    columnNames[columnIndex] = columnName;
+                    columnIndex++;
+                }
+            }
+
             // Obtener el número de filas del resultado de la consulta
             resultSet.last();
             int rowCount = resultSet.getRow();
             resultSet.beforeFirst();
 
             // Crear una matriz de objetos para almacenar los datos
-            Object[][] data = new Object[rowCount][columnCount];
+            Object[][] data = new Object[rowCount][columnCount - 2];
 
             // Rellenar la matriz de datos con los resultados de la consulta
             int rowIndex = 0;
             while (resultSet.next()) {
-                for (int columnIndex = 1; columnIndex <= columnCount; columnIndex++) {
-                    data[rowIndex][columnIndex - 1] = resultSet.getObject(columnIndex);
+                columnIndex = 0;
+                for (int i = 1; i <= columnCount; i++) {
+                    String columnName = metaData.getColumnName(i);
+                    if (!columnName.equals("rutinaId") && !columnName.equals("ejercicioId")) {
+                        data[rowIndex][columnIndex] = resultSet.getObject(i);
+                        columnIndex++;
+                    }
                 }
                 rowIndex++;
             }
@@ -82,17 +98,33 @@ public class PantallaVerRutina extends JFrame {
     }
 
     public PantallaVerRutina() {
-        setSize(800, 600);
-        setLocationRelativeTo(null);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         try {
             Object[][] data = getData();
-            String[] columnNames = {"rutinaId", "ejercicioId", "duracion", "nombre", "categoria"};
+
+            // Set the background color to RGB(50, 50, 50)
+            getContentPane().setBackground(new Color(50, 50, 50));
+
+            String[] columnNames = {"duracion", "nombre", "categoria"};
 
             JTable rutinasTable = new JTable(new RutinasTableModel(data, columnNames));
             JScrollPane scrollPane = new JScrollPane(rutinasTable);
             getContentPane().add(scrollPane, BorderLayout.CENTER);
+
+            // Add a "Volver" button at the bottom
+            JButton volverButton = new JButton("Volver");
+            volverButton.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    PantallaPrincipal pantallaPrincipal = new PantallaPrincipal();
+                    pantallaPrincipal.setVisible(true);
+                    dispose();
+                }
+            });
+            JPanel buttonPanel = new JPanel();
+            buttonPanel.add(volverButton);
+            getContentPane().add(buttonPanel, BorderLayout.SOUTH);
         } catch (SQLException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error al cargar las rutinas", "Error", JOptionPane.ERROR_MESSAGE);
@@ -136,4 +168,5 @@ public class PantallaVerRutina extends JFrame {
         });
     }
 }
+
 
