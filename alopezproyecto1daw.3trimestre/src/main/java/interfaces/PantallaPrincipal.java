@@ -57,8 +57,8 @@ public class PantallaPrincipal extends JFrame {
         
         CustomButton botonRealizarRutina = createButton("Haz Tu Rutina", font);
         botonRealizarRutina.addActionListener(e -> {
-        	PantallaEjercicio pantallaEjercicio = new PantallaEjercicio();
-            pantallaEjercicio.mostrar();
+        	PantallaEjercicio ejercicio = new PantallaEjercicio();
+            ejercicio.setVisible(true);
         });
         
 

@@ -91,6 +91,8 @@ public class PantallaVerRecetas extends JFrame {
 
             // Crea el JScrollPane para agregar la tabla
             JScrollPane scrollPane = new JScrollPane(recetasTable);
+            scrollPane.setBackground(new Color(50, 50, 50));
+            recetasTable.setBackground(new Color(50, 50, 50));
 
             // Agrega el JScrollPane al JFrame
             getContentPane().add(scrollPane, BorderLayout.CENTER);
@@ -98,8 +100,7 @@ public class PantallaVerRecetas extends JFrame {
             // Crea el botón para volver a PantallaPrincipal
             JButton backButton = new JButton("Volver a PantallaPrincipal");
             backButton.addActionListener(e -> {
-            	new PantallaPrincipal().setVisible(true);
-                dispose();
+                new PantallaPrincipal().setVisible(true);
                 dispose(); // Cierra la ventana actual
             });
             getContentPane().add(backButton, BorderLayout.SOUTH); // Agrega el botón debajo de la tabla
@@ -126,7 +127,7 @@ public class PantallaVerRecetas extends JFrame {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            pack();
+            setExtendedState(JFrame.MAXIMIZED_BOTH); // Establece la ventana en pantalla completa
             setLocationRelativeTo(null);
             setVisible(true);
         });
@@ -139,4 +140,5 @@ public class PantallaVerRecetas extends JFrame {
         }
     }
 }
+
 

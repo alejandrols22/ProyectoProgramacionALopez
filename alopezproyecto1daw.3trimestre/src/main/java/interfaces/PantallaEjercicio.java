@@ -8,29 +8,92 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
-public class PantallaEjercicio {
-    private JFrame frame;
+public class PantallaEjercicio extends JFrame {
     private JLabel label;
     private int gifIndex;
     private String[] gifPaths;
     private Clip audioClip;
     private JButton audioButton;
     private boolean isPlaying;
-    private String[] songPaths;
-    private String[] songNames;
-    private JComboBox<String> songComboBox;
+    private JComboBox<String> rutinaComboBox;
     private JPanel panel;
 
-    public PantallaEjercicio() {
-        frame = new JFrame();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(500, 500);
+    private String[] resistenciaGifs = {
+            "src/main/java/gifs/RESISTENCIA/1SaltarComba.gif",
+            "src/main/java/gifs/RESISTENCIA/2Burpee.gif",
+            "src/main/java/gifs/RESISTENCIA/3SaltosDeTijera.gif",
+            "src/main/java/gifs/RESISTENCIA/4MarchaEstacionaria.gif",
+            "src/main/java/gifs/RESISTENCIA/5EscaladorMontaña.gif",
+            "src/main/java/gifs/RESISTENCIA/6EjercicioStep.gif",
+            "src/main/java/gifs/RESISTENCIA/7JumpingLunges.gif",
+            "src/main/java/gifs/RESISTENCIA/8TuckJumps.gif",
+            "src/main/java/gifs/RESISTENCIA/9SentadillasLateral.gif",
+            "src/main/java/gifs/RESISTENCIA/10StarJumpsgif.gif"
+    };
 
-        gifPaths = new String[] {
-                "src/main/java/gifs/RESISTENCIA/2Burpee.gif",
-                "src/main/java/gifs/RESISTENCIA/4MarchaEstacionaria.gif",
-                "src/main/java/gifs/RESISTENCIA/6EjercicioStep.gif"
-        };
+    private String[] fuerzaGifs = {
+            "src/main/java/gifs/FUERZA/1flexion.gif",
+            "src/main/java/gifs/FUERZA/2EstocadasHaciaAdelante.gif",
+            "src/main/java/gifs/FUERZA/3plancha.gif",
+            "src/main/java/gifs/FUERZA/4PlanchaLateral.gif",
+            "src/main/java/gifs/FUERZA/5EstocaLateral.gif",
+            "src/main/java/gifs/FUERZA/6Dips.gif",
+            "src/main/java/gifs/FUERZA/7FlexionElevada.gif",
+            "src/main/java/gifs/FUERZA/8Sentadilla.gif",
+            "src/main/java/gifs/FUERZA/9LevantamientoDePantorrillas.gif",
+            "src/main/java/gifs/FUERZA/10KickBack.gif"
+    };
+
+    private String[] flexibilidadGifs = {
+            "src/main/java/gifs/FLEXIBILIDAD/1BowPose.gif",
+            "src/main/java/gifs/FLEXIBILIDAD/2GatePose.gif",
+            "src/main/java/gifs/FLEXIBILIDAD/3CobraPose.gif",
+            "src/main/java/gifs/FLEXIBILIDAD/4MoonPose.gif",
+            "src/main/java/gifs/FLEXIBILIDAD/5CorpePose.gif",
+            "src/main/java/gifs/FLEXIBILIDAD/6WideLegged.gif",
+            "src/main/java/gifs/FLEXIBILIDAD/7MountainPose.gif",
+            "src/main/java/gifs/FLEXIBILIDAD/8TreePose.gif",
+            "src/main/java/gifs/FLEXIBILIDAD/9DancePose.gif",
+            "src/main/java/gifs/FLEXIBILIDAD/10TabelTopPose.gif"
+    };
+
+    private String[] resistenciaSongs = {
+            "src/main/java/canciones/1Phonk.wav",
+            "src/main/java/canciones/2Motivacional.wav",
+            "src/main/java/canciones/3TheChain.wav",
+            "src/main/java/canciones/4MrBlueSky.wav",
+            "src/main/java/canciones/5TotoAfrica.wav",
+            "src/main/java/canciones/6Maniac.wav",
+            "src/main/java/canciones/7EyeOfTiger.wav"
+    };
+
+    private String[] fuerzaSongs = {
+            "src/main/java/canciones/1Phonk.wav",
+            "src/main/java/canciones/2Motivacional.wav",
+            "src/main/java/canciones/3TheChain.wav",
+            "src/main/java/canciones/4MrBlueSky.wav",
+            "src/main/java/canciones/5TotoAfrica.wav",
+            "src/main/java/canciones/6Maniac.wav",
+            "src/main/java/canciones/7EyeOfTiger.wav"
+    };
+
+    private String[] flexibilidadSongs = {
+            "src/main/java/canciones/1Phonk.wav",
+            "src/main/java/canciones/2Motivacional.wav",
+            "src/main/java/canciones/3TheChain.wav",
+            "src/main/java/canciones/4MrBlueSky.wav",
+            "src/main/java/canciones/5TotoAfrica.wav",
+            "src/main/java/canciones/6Maniac.wav",
+            "src/main/java/canciones/7EyeOfTiger.wav"
+    };
+
+    public PantallaEjercicio() {
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        getContentPane().setBackground(new Color(50, 50, 50));
+        setLayout(new BorderLayout());
+
+        gifPaths = resistenciaGifs; // Por defecto, muestra los GIFs de resistencia
         gifIndex = 0;
 
         ImageIcon icon = new ImageIcon(gifPaths[gifIndex]);
@@ -38,6 +101,7 @@ public class PantallaEjercicio {
 
         panel = new JPanel();
         panel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        panel.setBackground(new Color(50, 50, 50));
 
         JButton siguienteButton = new JButton("Siguiente");
         siguienteButton.addActionListener(new ActionListener() {
@@ -50,31 +114,42 @@ public class PantallaEjercicio {
                 label.setIcon(newIcon);
             }
         });
+        siguienteButton.setForeground(Color.WHITE);
+        siguienteButton.setBackground(new Color(70, 70, 70));
         panel.add(siguienteButton);
 
-        songPaths = new String[] {
-                "src/main/java/canciones/1Phonk.wav",
-                "src/main/java/canciones/2Motivacional.wav",
-                "src/main/java/canciones/3TheChain.wav",
-                "src/main/java/canciones/4MrBlueSky.wav",
-                "src/main/java/canciones/5TotoAfrica.wav",
-                "src/main/java/canciones/6Maniac.wav",
-                "src/main/java/canciones/7EyeOfTiger.wav"
-                
-        };
+        rutinaComboBox = new JComboBox<>();
+        rutinaComboBox.addItem("Resistencia");
+        rutinaComboBox.addItem("Fuerza");
+        rutinaComboBox.addItem("Flexibilidad");
+        rutinaComboBox.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String rutinaSeleccionada = (String) rutinaComboBox.getSelectedItem();
+                if (rutinaSeleccionada.equals("Resistencia")) {
+                    gifPaths = resistenciaGifs;
+                } else if (rutinaSeleccionada.equals("Fuerza")) {
+                    gifPaths = fuerzaGifs;
+                } else if (rutinaSeleccionada.equals("Flexibilidad")) {
+                    gifPaths = flexibilidadGifs;
+                }
+                gifIndex = 0;
+                ImageIcon newIcon = new ImageIcon(gifPaths[gifIndex]);
+                label.setIcon(newIcon);
+            }
+        });
+        rutinaComboBox.setForeground(Color.WHITE);
+        rutinaComboBox.setBackground(new Color(70, 70, 70));
+        panel.add(rutinaComboBox);
 
-        songNames = new String[] {
-                "Cancion Phonk",
-                "Cancion Motivacional",
-                "The Chain",
-                "Mr Blue Sky",
-                "Toto Africa",
-                "Maniac",
-                "The Eye of The Tiger"
-                // Add more song names corresponding to the paths above...
-        };
+        String[] songPaths = resistenciaSongs; // Por defecto, muestra las canciones de resistencia
+        String[] songNames = new String[songPaths.length];
+        for (int i = 0; i < songPaths.length; i++) {
+            songNames[i] = "Canción " + (i + 1);
+        }
 
-        songComboBox = new JComboBox<>(songNames);
+        JComboBox<String> songComboBox = new JComboBox<>(songNames);
+        songComboBox.setForeground(Color.WHITE);
+        songComboBox.setBackground(new Color(70, 70, 70));
         panel.add(songComboBox);
 
         audioButton = new JButton("Reproducir audio");
@@ -88,10 +163,24 @@ public class PantallaEjercicio {
                 }
             }
         });
+        audioButton.setForeground(Color.WHITE);
+        audioButton.setBackground(new Color(70, 70, 70));
         panel.add(audioButton);
 
-        frame.getContentPane().add(label, BorderLayout.CENTER);
-        frame.getContentPane().add(panel, BorderLayout.SOUTH);
+        JButton backButton = new JButton("Volver a la pantalla principal");
+        backButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	stopAudio(); // Detener reproducción de audio
+                new PantallaPrincipal().setVisible(true);
+                dispose();
+            }
+        });
+        backButton.setForeground(Color.WHITE);
+        backButton.setBackground(new Color(70, 70, 70));
+        panel.add(backButton);
+
+        add(label, BorderLayout.CENTER);
+        add(panel, BorderLayout.SOUTH);
     }
 
     private void playAudio(String songPath) {
@@ -107,7 +196,7 @@ public class PantallaEjercicio {
             isPlaying = true;
         } catch (Exception e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(frame, "Error al reproducir el audio: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error al reproducir el audio: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -122,12 +211,8 @@ public class PantallaEjercicio {
         isPlaying = false;
     }
 
-    public void mostrar() {
-        frame.setVisible(true);
-    }
-
     public static void main(String[] args) {
-        new PantallaEjercicio().mostrar();
+        PantallaEjercicio ejercicio = new PantallaEjercicio();
+        ejercicio.setVisible(true);
     }
 }
-
