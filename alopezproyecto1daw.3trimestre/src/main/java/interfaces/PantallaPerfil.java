@@ -1,3 +1,4 @@
+
 package interfaces;
 
 import javax.swing.*;
@@ -32,38 +33,31 @@ public class PantallaPerfil extends JFrame {
         ResultSet resultSet = null;
 
         try {
-            try {
-                connection = getConnection();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            connection = getConnection();
             statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            resultSet = statement.executeQuery("SELECT * FROM Usuario");
+            resultSet = statement.executeQuery("SELECT Usuario.edad, Usuario.peso, Usuario.altura, Usuario.sexo, Usuario.nivel_actividad, Usuario.objetivo, Usuario.objetivo_diario_calorias, Usuario.email, Usuario.contraseña, Usuario.telefono, Entidad.nombre AS entidad_nombre FROM Usuario JOIN Entidad ON Usuario.entidadId = Entidad.id");
 
-            // Obtener el número de columnas del resultado de la consulta
             ResultSetMetaData metaData = resultSet.getMetaData();
             int columnCount = metaData.getColumnCount();
 
-            // Obtener el número de filas del resultado de la consulta
             resultSet.last();
             int rowCount = resultSet.getRow();
             resultSet.beforeFirst();
 
-            // Crear una matriz de objetos para almacenar los datos
-            Object[][] data = new Object[rowCount][columnCount];
+            Object[][] data = new Object[rowCount][columnCount - 1]; // Reducir el número de columnas en 1
 
-            // Rellenar la matriz de datos con los resultados de la consulta
             int rowIndex = 0;
             while (resultSet.next()) {
-                for (int i = 1; i <= columnCount; i++) {
-                    data[rowIndex][i - 1] = resultSet.getObject(i);
+                for (int i = 2; i <= columnCount; i++) { // Empezar desde 2 para omitir el ID
+                    data[rowIndex][i - 2] = resultSet.getObject(i);
                 }
                 rowIndex++;
             }
 
             return data;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new Object[0][0];
         } finally {
             if (resultSet != null) {
                 resultSet.close();
@@ -84,14 +78,12 @@ public class PantallaPerfil extends JFrame {
         try {
             Object[][] data = getData();
 
-            // Set the background color to RGB(50, 50, 50)
             getContentPane().setBackground(new Color(50, 50, 50));
 
             JTable usuariosTable = new JTable(new UsuariosTableModel(data));
             JScrollPane scrollPane = new JScrollPane(usuariosTable);
             getContentPane().add(scrollPane, BorderLayout.CENTER);
 
-            // Add a "Volver" button at the bottom
             JButton volverButton = new JButton("Volver");
             volverButton.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
@@ -122,13 +114,14 @@ public class PantallaPerfil extends JFrame {
             try {
                 Connection connection = getConnection();
                 Statement statement = connection.createStatement();
-                ResultSet resultSet = statement.executeQuery("SELECT * FROM Usuario LIMIT 1");
+                ResultSet resultSet = statement.executeQuery("SELECT Usuario.edad, Usuario.peso, Usuario.altura, Usuario.sexo, Usuario.nivel_actividad, Usuario.objetivo, Usuario.objetivo_diario_calorias, Usuario.email, Usuario.contraseña, Usuario.telefono, Entidad.nombre AS entidad_nombre FROM Usuario JOIN Entidad ON Usuario.entidadId = Entidad.id LIMIT 1");
                 ResultSetMetaData metaData = resultSet.getMetaData();
                 int columnCount = metaData.getColumnCount();
 
-                String[] columnNames = new String[columnCount];
-                for (int i = 1; i <= columnCount; i++) {
-                    columnNames[i - 1] = metaData.getColumnName(i);
+                String[] columnNames = new String[columnCount - 1]; // Reducir el número de columnas en 1
+
+                for (int i = 2; i <= columnCount; i++) { // Empezar desde 2 para omitir el ID
+                    columnNames[i - 2] = metaData.getColumnName(i);
                 }
 
                 resultSet.close();

@@ -69,9 +69,9 @@ public class PantallaPrincipal extends JFrame {
         });
         
 
-        CustomButton botonActualizarDatos = createButton("Actualiza tus datos", font);
-        botonActualizarDatos.addActionListener(e -> {
-            new PantallaActualizarDatos().setVisible(true);
+        CustomButton botonImagen = createButton("Ver Imagen", font);
+        botonImagen.addActionListener(e -> {
+            new PantallaImagen().setVisible(true);
             this.setVisible(false);
         });
         
@@ -87,7 +87,7 @@ public class PantallaPrincipal extends JFrame {
         buttonPanel.add(botonCrearRutina);
         buttonPanel.add(botonVerRutina);
         buttonPanel.add(botonRealizarRutina);
-        buttonPanel.add(botonActualizarDatos);
+        buttonPanel.add(botonImagen);
         buttonPanel.add(botonVerPerfil);
 
         this.add(buttonPanel, BorderLayout.CENTER);

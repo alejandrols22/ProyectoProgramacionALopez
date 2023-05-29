@@ -67,7 +67,7 @@ public class PantallaVerProgreso extends JFrame {
         });
 
         // Crea el mensaje para el usuario
-        JLabel userMessage = new JLabel("Para que la gráfica muestre datos, el usuario debe actualizar sus datos en PantallaActualizarDatos");
+        JLabel userMessage = new JLabel("Para ver el progreso, debes añadir al menos dos veces datos del cambio que lleves.");
         userMessage.setFont(new Font("Serif", Font.BOLD, 20));
 
         // Crea el panel para ingresar los datos

@@ -51,6 +51,6 @@ public class Ejercicio extends Entidad {
     }
 
     public void calcular_calorias_quemadas(int duracion) {
-        // implementación
+        
     }
 }
