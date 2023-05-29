@@ -1,22 +1,27 @@
 package interfaces;
 
+import com.toedter.calendar.JDateChooser;
+
+import javax.swing.*;
+
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.time.Day;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class PantallaVerProgreso extends JFrame {
 
     private TimeSeries series;
+    private JTextField weightField;
+    private JDateChooser dateChooser;
 
     public PantallaVerProgreso() {
         series = new TimeSeries("Peso");
@@ -26,9 +31,36 @@ public class PantallaVerProgreso extends JFrame {
         final ChartPanel chartPanel = new ChartPanel(chart);
         chartPanel.setPreferredSize(new Dimension(500, 270));
 
+        // Crea los campos de texto para el peso y el selector de fecha
+        weightField = new JTextField(10);
+        dateChooser = new JDateChooser();
+
+        // Crea el botón "Agregar"
+        JButton addButton = new JButton("Agregar");
+        addButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String weightText = weightField.getText();
+                Date selectedDate = dateChooser.getDate();
+
+                if (!weightText.isEmpty() && selectedDate != null) {
+                    try {
+                        double weight = Double.parseDouble(weightText);
+                        addWeightMeasurement(selectedDate, weight);
+                        chartPanel.repaint();
+                        weightField.setText("");
+                        dateChooser.setDate(null);
+                    } catch (NumberFormatException ex) {
+                        JOptionPane.showMessageDialog(PantallaVerProgreso.this, "Por favor, ingrese un valor numérico válido para el peso.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(PantallaVerProgreso.this, "Por favor, ingrese el peso y la fecha.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
         // Crea el botón "Volver"
         JButton backButton = new JButton("Volver");
-        backButton.setBounds(141, 84, 80, 30);
         backButton.addActionListener(e -> {
             new PantallaPrincipal().setVisible(true);
             this.setVisible(false);
@@ -38,12 +70,21 @@ public class PantallaVerProgreso extends JFrame {
         JLabel userMessage = new JLabel("Para que la gráfica muestre datos, el usuario debe actualizar sus datos en PantallaActualizarDatos");
         userMessage.setFont(new Font("Serif", Font.BOLD, 20));
 
-        // Añade el panel del gráfico, el botón y el mensaje al contenedor principal
+        // Crea el panel para ingresar los datos
+        JPanel inputPanel = new JPanel();
+        inputPanel.add(new JLabel("Peso:"));
+        inputPanel.add(weightField);
+        inputPanel.add(new JLabel("Fecha:"));
+        inputPanel.add(dateChooser);
+        inputPanel.add(addButton);
+
+        // Añade el panel del gráfico, el botón "Volver", el mensaje y el panel de entrada de datos al contenedor principal
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
         mainPanel.add(chartPanel, BorderLayout.CENTER);
         mainPanel.add(backButton, BorderLayout.SOUTH);
         mainPanel.add(userMessage, BorderLayout.NORTH);
+        mainPanel.add(inputPanel, BorderLayout.EAST);
 
         setContentPane(mainPanel);
         setExtendedState(JFrame.MAXIMIZED_BOTH); // Abre la ventana maximizada
