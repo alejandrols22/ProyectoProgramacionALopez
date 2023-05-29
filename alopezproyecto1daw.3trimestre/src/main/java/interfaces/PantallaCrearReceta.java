@@ -97,7 +97,7 @@ public class PantallaCrearReceta extends JFrame {
         JPanel opcionesPanel = new JPanel(new GridLayout(4, 2));
         opcionesPanel.setBackground(new Color(50, 50, 50));
         opcionesPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        
+
         JLabel labelCaloriasReceta = new JLabel("Calorías de la receta:");
         labelCaloriasReceta.setForeground(Color.WHITE);
         JTextField textFieldCaloriasReceta = new JTextField(10);
@@ -148,10 +148,24 @@ public class PantallaCrearReceta extends JFrame {
             }
         });
 
+        JButton botonPrincipal = new JButton("Ir a Pantalla Principal");
+        botonPrincipal.setBackground(Color.WHITE);
+        botonPrincipal.setForeground(Color.BLACK);
+        botonPrincipal.setPreferredSize(new Dimension(400, 40));
+        botonPrincipal.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                PantallaPrincipal pantallaPrincipal = new PantallaPrincipal();
+                pantallaPrincipal.setVisible(true);
+                dispose();
+            }
+        });
+
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         buttonPanel.setBackground(new Color(50, 50, 50));
         buttonPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         buttonPanel.add(calcularButton);
+        buttonPanel.add(botonPrincipal);
 
         getContentPane().setLayout(new BorderLayout());
         getContentPane().setBackground(new Color(50, 50, 50));
@@ -290,7 +304,6 @@ public class PantallaCrearReceta extends JFrame {
         }
     }
 }
-
 
 
 
