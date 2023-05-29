@@ -41,23 +41,11 @@ public class PantallaVerRecetas extends JFrame {
 
             // Crea el modelo de tabla no editable
             TableModel tableModel = new NonEditableTableModel();
-            ((NonEditableTableModel) tableModel).addColumn("ID");
-            ((NonEditableTableModel) tableModel).addColumn("Entidad ID");
-            ((NonEditableTableModel) tableModel).addColumn("Calorias Proteinas");
-            ((NonEditableTableModel) tableModel).addColumn("Calorias Carbohidratos");
-            ((NonEditableTableModel) tableModel).addColumn("Calorias Grasas");
-            ((NonEditableTableModel) tableModel).addColumn("Alimentos");
 
             // Agrega los datos de las recetas a la tabla
             while (resultSet.next()) {
-                int id = resultSet.getInt("id");
-                int entidadId = resultSet.getInt("entidadId");
-                float caloriasProteinas = resultSet.getFloat("caloriasProteinas");
-                float caloriasCarbohidratos = resultSet.getFloat("caloriasCarbohidratos");
-                float caloriasGrasas = resultSet.getFloat("caloriasGrasas");
                 String alimentos = resultSet.getString("alimentos");
-
-                ((NonEditableTableModel) tableModel).addRow(new Object[]{id, entidadId, caloriasProteinas, caloriasCarbohidratos, caloriasGrasas, alimentos});
+                ((NonEditableTableModel) tableModel).addRow(new Object[]{alimentos});
             }
 
             // Crea la tabla con el modelo de datos no editable
@@ -68,6 +56,9 @@ public class PantallaVerRecetas extends JFrame {
             table.setColumnSelectionAllowed(false);
             table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
             table.setFillsViewportHeight(true);
+
+            // Ajusta el ancho de la columna "Alimentos"
+            table.getColumnModel().getColumn(0).setPreferredWidth((int) (table.getColumnModel().getTotalColumnWidth() * 0.9));
 
             return table;
         } finally {
@@ -88,6 +79,7 @@ public class PantallaVerRecetas extends JFrame {
         try {
             // Crea la tabla de recetas
             JTable recetasTable = createTable();
+            recetasTable.setForeground(Color.WHITE);
 
             // Crea el JScrollPane para agregar la tabla
             JScrollPane scrollPane = new JScrollPane(recetasTable);
@@ -134,11 +126,21 @@ public class PantallaVerRecetas extends JFrame {
     }
 
     public class NonEditableTableModel extends DefaultTableModel {
+        public NonEditableTableModel() {
+            super(new Object[][] {}, new String[] { "Alimentos" });
+        }
+
         @Override
         public boolean isCellEditable(int row, int column) {
             return false;
         }
     }
+
+    public static void main(String[] args) {
+        PantallaVerRecetas pantalla = new PantallaVerRecetas();
+        pantalla.mostrarInterfaz();
+    }
 }
+
 
 
